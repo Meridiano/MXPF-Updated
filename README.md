@@ -1,5 +1,5 @@
-# MXPF
-MXPF is an an xEdit scripting library that provides a variety of functions for patches generation. Custom fork with tweaks related to modern Bethesda games. [MIT License](https://meridiano.mit-license.org/).
+# MXPF-Updated
+MXPF-Updated is an an xEdit scripting library that provides a variety of functions for patches generation. Custom fork with tweaks related to modern Bethesda games. [MIT License](https://meridiano.mit-license.org/).
 
 ## Installation
 Copy the files from the [Edit Scripts](Edit%20Scripts) folder to xEdit's "Edit Scripts" folder.
