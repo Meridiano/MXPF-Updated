@@ -31,7 +31,7 @@ const
 	mxInclusionMode = 2;
 	
 	// comma separated list of Bethesda files
-	mxBethesdaCoreFiles = 'Starfield.esm'#13'Starfield.exe';
+	mxBethesdaCoreFiles = 'Starfield.esm'#44'Starfield.exe'#44'BlueprintShips-Starfield.esm';
 	
 	// comma separated list of hardcoded exe files
 	mxHardcodedExeFiles = 'Starfield.exe';

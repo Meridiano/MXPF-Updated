@@ -122,7 +122,7 @@
 unit mteFunctions;
 
 const
-	bethesdaFiles = 'Starfield.esm'#13'Starfield.exe'#13'BlueprintShips-Starfield.esm';
+	bethesdaFiles = 'Starfield.esm'#44'Starfield.exe'#44'BlueprintShips-Starfield.esm';
 	GamePath = DataPath + '..\';
 
 type
@@ -2079,7 +2079,7 @@ end;
 	Creates a form for the user to select a file to be used.
 	
 	Example usage:
-	UserFile := FileSelect('Select the file you wish to use below: ');
+	UserFile := FileSelect('Select the file you wish to use below:');
 }
 function FileSelect(prompt: string): IInterface;
 var
@@ -2100,7 +2100,7 @@ begin
 		lbl := TLabel.Create(frm);
 		lbl.Parent := frm;
 		lbl.Width := 284;
-		if Pos(#13, prompt) > 0 then begin
+		if Pos(#44, prompt) > 0 then begin
 			lbl.Height := 60;
 		end
 		else begin
@@ -2351,7 +2351,7 @@ begin
 			for i := 0 to ElementCount(f) - 1 do begin
 				g := ElementByIndex(f, i);
 				if Signature(g) = 'TES4' then Continue;
-				if not (sGroups = '') then sGroups := sGroups + #13 + GroupSignature(g)
+				if not (sGroups = '') then sGroups := sGroups + #13#10 + GroupSignature(g)
 				else sGroups := GroupSignature(g);
 			end;
 			TComboBox(pnl.Controls[1]).Items.Text := sGroups;
@@ -2387,7 +2387,7 @@ begin
 	// prepare sFileList
 	for i := 0 to FileCount - 1 do begin
 		if not (sFileList = '') then 
-			sFileList := sFileList + #13 + GetFileName(FileByLoadOrder(i))
+			sFileList := sFileList + #13#10 + GetFileName(FileByLoadOrder(i))
 		else 
 			sFileList := GetFileName(FileByLoadOrder(i));
 	end;
@@ -2894,7 +2894,7 @@ begin
 	lb.AutoSize := false;
 	lb.WordWrap := true;
 	if (height = 0) and (width = 0) then lb.AutoSize := true;
-	if (height = 0) and (Pos(#13, s) > 0) then lb.AutoSize := true;
+	if (height = 0) and (Pos(#44, s) > 0) then lb.AutoSize := true;
 	if height > 0 then lb.Height := height;
 	if width > 0 then lb.Width := width;
 	lb.Caption := s;
