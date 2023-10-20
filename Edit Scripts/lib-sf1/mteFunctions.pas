@@ -1,6 +1,6 @@
 {
 	Mator-The-Eternal's Functions
-	Edited 18/10/2023 by Meridiano
+	Edited 20/10/2023 by Meridiano
 	
 	A set of useful functions for use in xEdit scripts.
 	
@@ -32,7 +32,7 @@
 	- [CopyFromTo]: copies all characters in a string from a starting position to an ending position.
 	- [SetChar]: sets a character in a string to a different character and returns the resulting string.
 	- [GetChar]: gets a character in a string and returns it.
-	- [DelimitedTextBetween]: gets the delimited text of a stringlist between two indexes, including the entries at those indices.
+	- [DelimitedTextBetween]: gets the delimited text of a string-list between two indexes, including the entries at those indices.
 	- [GetTextIn]: gets a substring from a string between two characters.
 	- [RecordByLocalFormID]: gets a record by a hexadecimal FormID string.
 	- [FileByLocalIndex]: gets a file by its hexadecimal local xEdit index.
@@ -44,7 +44,7 @@
 	- [WinningOverrideBefore]: returns the most winning override of a record in a file which has a load order less than the load order of the specified file.
 	- [OverrideByFile]: gets the override for a particular record in a particular file, if it exists.
 	- [OverrideRecordCount]: gets the number of override records in a file or record group.
-	- [GetRecords]: adds the records in a file or group to a stringlist.
+	- [GetRecords]: adds the records in a file or group to a string-list.
 	- [GroupSignature]: gets the signature of a group record.
 	- [HexFormID]: gets the FormID of a record as a hexadecimal string.
 	- [FileFormID]: gets the FileFormID of a record as a cardinal.
@@ -55,13 +55,13 @@
 	- [ElementsByMIP]: provides an array of elements matching an indexed path (with [*] meaning any index).
 	- [GetIndexedPath]: gets the indexed path of an element.
 	- [GetElementPath]: gets the path of an element that can then be used in ElementByPath.
-	- [SetListEditValues]: sets the edit values in a list of elements to the values stored in a stringlist.
+	- [SetListEditValues]: sets the edit values in a list of elements to the values stored in a string-list.
 	- [SetListNativeValues]: sets the native values in a list of elements to the values stored in a TList.
 	- [EBN]: ElementByName shortened function name.
 	- [EBP]: ElementByPath shortened function name.
 	- [EBI]: ElementByIndex shortened function name.
 	- [EBIP]: ElementByIP shortened function name.
-	- [MGEEV]: Produces a stringlist of element edit values from a list of elements. Use with ElementsByMIP.
+	- [MGEEV]: Produces a string-list of element edit values from a list of elements. Use with ElementsByMIP.
 	- [GEEV]: GetElementEditValues enhanced with ElementByIP.
 	- [GENV]: GetElementNativeValues enhanced with ElementByIP.
 	- [SEEV]: SetElementEditValues enhanced with ElementByIP.
@@ -83,9 +83,9 @@
 	- [ExtractBSA]: extracts the contents of a BSA to the specified path.
 	- [ExtractPathBSA]: extracts the contents of a BSA from a specified subpath to the specified path.
 	- [PrintBSAContents]: prints the contents of a BSA to xEdit's message log.
-	- [GetMasters]: adds masters from the specified file to the specified stringlist.
-	- [AddMastersToList]: adds masters from the specified file (and the file itself) to the specified stringlist.
-	- [AddMastersToFile]: adds masters to the specified file from the specified stringlist. Will re-add masters if they were already added by AddMasterIfMissing and later removed.
+	- [GetMasters]: adds masters from the specified file to the specified string-list.
+	- [AddMastersToList]: adds masters from the specified file (and the file itself) to the specified string-list.
+	- [AddMastersToFile]: adds masters to the specified file from the specified string-list. Will re-add masters if they were already added by AddMasterIfMissing and later removed.
 	- [RemoveMaster]: removes a master of the specified name from the specified file. NOTE: This function can be dangerous if used improperly.
 	- [FileSelect]: creates a window from which the user can select or create a file. Doesn't include bethesda master files. Outputs selected file as IInterface.
 	- [MultiFileSelect]: allows the user to select multiple files, returning them through a TStringList.
@@ -105,24 +105,24 @@
 	- [ConstructButton]: an all-in-one button constructor.
 	- [ConstructLabelEditPair]: constructs a TLabel and TEdit side-by-side.
 	- [ConstructModalButtons]: a procedure to make the standard OK and Cancel buttons on a form.
-	- [cGroup]: ConstructGroup shortened function name.
-	- [cImage]: ConstructImage shortened function name.
-	- [cRadioGroup]: ConstructRadioGroup shortened function name.
-	- [cRadioButton]: ConstructRadioButton shortened function name.
-	- [cMemo]: ConstructMemo shortened function name.
-	- [cScrollBox]: ConstructScrollBox shortened function name.
-	- [cCheckBox]: ConstructCheckBox shortened function name.
-	- [cLabel]: ConstructLabel shortened function name.
-	- [cEdit]: ConstructEdit shortened function name.
-	- [cButton]: ConstructButton shortened function name.
-	- [cPair]: ConstructLabelEditPair shortened function name.
-	- [cModal]: ConstructModalButtons shortened function name.
+	- [CGroup]: ConstructGroup shortened function name.
+	- [CImage]: ConstructImage shortened function name.
+	- [CRadioGroup]: ConstructRadioGroup shortened function name.
+	- [CRadioButton]: ConstructRadioButton shortened function name.
+	- [CMemo]: ConstructMemo shortened function name.
+	- [CScrollBox]: ConstructScrollBox shortened function name.
+	- [CCheckBox]: ConstructCheckBox shortened function name.
+	- [CLabel]: ConstructLabel shortened function name.
+	- [CEdit]: ConstructEdit shortened function name.
+	- [CButton]: ConstructButton shortened function name.
+	- [CPair]: ConstructLabelEditPair shortened function name.
+	- [CModal]: ConstructModalButtons shortened function name.
 }
 
 unit mteFunctions;
 
 const
-	bethesdaFiles = 'Starfield.esm'#13'Starfield.exe';
+	bethesdaFiles = 'Starfield.esm'#13'Starfield.exe'#13'BlueprintShips-Starfield.esm';
 	GamePath = DataPath + '..\';
 
 type
@@ -500,7 +500,7 @@ end;
 
 {
 	BatchCopyDirectory:
-	Adds copy commands to a batch stringlist to copy all of the 
+	Adds copy commands to a batch string-list to copy all of the 
 	contents of a directory.
 	
 	Example usage:
@@ -889,7 +889,7 @@ end;
 
 {
 	DelimitedTextBetween:
-	Gets the delimited text from a stringlist @sl
+	Gets the delimited text from a string-list @sl
 	between index @first and ending at index @last.
 	
 	Example usage:
@@ -960,7 +960,8 @@ begin
 		f := FileByLocalIndex(ps);
 		id := Copy(id, 3, 6);
 	end;
-	Result := RecordByFormID(f, StrToInt('$' + IntToStr(MasterCount(f)) + id), false);
+	id := '$' + IntToHex(MasterCount(f), 2) + id;
+	Result := RecordByFormID(f, StrToInt(id), false);
 end;
 
 {
@@ -1174,7 +1175,7 @@ end;
 
 {
 	GetRecords:
-	Add the records in a file or group to a stringlist.
+	Add the records in a file or group to a string-list.
 	
 	Example usage:
 	slRecords := TStringList.Create;
@@ -1328,7 +1329,7 @@ begin
 	// replace forward slashes with backslashes
 	ip := StringReplace(ip, '/', '\', [rfReplaceAll]);
 	
-	// prepare path stringlist delimited by backslashes
+	// prepare path string-list delimited by backslashes
 	path := TStringList.Create;
 	path.Delimiter := '\';
 	path.StrictDelimiter := true;
@@ -1371,7 +1372,7 @@ begin
 	// replace forward slashes with backslashes
 	ip := StringReplace(ip, '/', '\', [rfReplaceAll]);
 	
-	// prepare path stringlist delimited by backslashes
+	// prepare path string-list delimited by backslashes
 	path := TStringList.Create;
 	path.Delimiter := '\';
 	path.StrictDelimiter := true;
@@ -1444,7 +1445,7 @@ end;
 
 {
 	SetListEditValues:
-	Sets the values of elements in a list to values stored in a stringlist.
+	Sets the values of elements in a list to values stored in a string-list.
 	
 	Example usage:
 	SetListEditValues(e, 'Additional Races', slAdditionalRaces);
@@ -1543,7 +1544,7 @@ end;
 {
 	MGEEV:
 	Uses GetEditValues on each element in a list of elements to
-	produce a stringlist of element edit values. Use with ElementsByMIP.
+	produce a string-list of element edit values. Use with ElementsByMIP.
 	
 	Example usage:
 	lst := TList.Create;
@@ -1830,7 +1831,7 @@ begin
 	conditions := ElementByPath(rec, 'Conditions');
 	if not Assigned(conditions) then
 		exit;
-		
+	
 	for i := 0 to ElementCount(conditions) - 1 do begin
 		ci := ElementByIndex(conditions, i);
 		func := GEEV(ci, 'CTDA\Function');
@@ -1874,7 +1875,7 @@ begin
 			AddMessage('Error copying file ' + slAssets[i] + ': ' + E.Message);
 	end;
 	
-	// free stringlists
+	// free string-lists
 	slAssets.Free;
 end;
 
@@ -1883,7 +1884,7 @@ end;
 	Extracts assets from a BSA that match a specified path.
 	
 	Example usage:
-	ExtractPathBSA(DataPath + 'OldMars - Textures.ba2', TempPath, 'textures\dlc_oldmars\clothes');
+	ExtractPathBSA(DataPath + 'OldMars - Textures.ba2', 'C:\TestExtract\', 'textures\dlc_oldmars\clothes');
 } 
 procedure ExtractPathBSA(aContainerName, aPath, aSubPath: string);
 var
@@ -1909,7 +1910,7 @@ begin
 			AddMessage('Error copying file ' + slAssets[i] + ': ' + E.Message);
 	end;
 	
-	// free stringlists
+	// free string-lists
 	slAssets.Free;
 end;
 
@@ -1918,9 +1919,9 @@ end;
 	Prints to the log the contents of a BSA file.
 	
 	Example usage:
-	PrintBSAContents(dataPath + 'Update.bsa');
+	PrintBSAContents(DataPath + 'OldMars - Textures.ba2');
 }
-procedure PrintBSAContents(aContainerName);
+procedure PrintBSAContents(aContainerName: string);
 var
 	i: integer;
 	slAssets: TStringList;
@@ -1933,17 +1934,17 @@ begin
 	for i := 0 to Pred(slAssets.Count) do
 		AddMessage(slAssets[i]);
 		
-	// free stringlist
+	// free string-list
 	slAssets.Free;
 end;
 
 {
 	GetMasters:
-	Adds the masters from a specific file to a specified stringlist.
+	Adds the masters from a specific file to a specified string-list.
 	
 	Example usage:
 	slMasters := TStringList.Create;
-	GetMasters(FileByName('Dragonborn.esm'), slMasters);
+	GetMasters(FileByName('OldMars.esm'), slMasters);
 	slMasters.Free;
 }
 procedure GetMasters(f: IInterface; var sl: TStringList);
@@ -1966,11 +1967,11 @@ end;
 {
 	AddMastersToList:
 	Adds the masters from a specific file, and the file itself, to a 
-	specified stringlist.
+	specified string-list.
 	
 	Example usage:
 	slMasters := TStringList.Create;
-	AddMastersToList(FileByName('Dragonborn.esm'), slMasters);
+	AddMastersToList(FileByName('OldMars.esm'), slMasters);
 	slMasters.Free;
 }
 procedure AddMastersToList(f: IInterface; var lst: TStringList);
@@ -1995,13 +1996,13 @@ end;
 
 {
 	AddMastersToFile:
-	Adds masters from a stringlist to the specified file.
+	Adds masters from a string-list to the specified file.
 	
 	Example usage:
 	slMasters := TStringList.Create;
-	slMasters.Add('Skyrim.esm');
-	slMasters.Add('Update.esm');
-	UserFile := FileSelect('Select the file you wish to use below: ');
+	slMasters.Add('PluginA.esm');
+	slMasters.Add('PluginB.esm');
+	UserFile := FileSelect('Select the file you wish to use below:');
 	AddMastersToFile(UserFile, slMasters, False);
 }
 procedure AddMastersToFile(f: IInterface; lst: TStringList; silent: boolean);
@@ -2011,11 +2012,11 @@ var
 	s: string;
 	slCurrentMasters: TStringList;
 begin
-	// create local stringlist
+	// create local string-list
 	slCurrentMasters := TStringList.Create;
 	
 	// AddMasterIfMissing will attempt to add the masters to the file.
-	if not silent then AddMessage('	   Adding masters to '+GetFileName(f)+'...');
+	if not silent then AddMessage('Adding masters to ' + GetFileName(f) + '...');
 	for i := 0 to lst.Count - 1 do begin
 		if (Lowercase(lst[i]) <> Lowercase(GetFileName(f))) and (not StrEndsWith(Lowercase(lst[i]), '.exe')) then
 			AddMasterIfMissing(f, lst[i]);
@@ -2023,8 +2024,8 @@ begin
 	
 	// AddMasterIfMissing won't add the masters if they have been removed
 	// in the current xEdit session, so a manual re-adding process is
-	// used.	This process can't fully replace AddMasterIfMissing without
-	// causing problems.	It only works for masters that have been removed
+	// used. This process can't fully replace AddMasterIfMissing without
+	// causing problems. It only works for masters that have been removed
 	// in the current xEdit session.
 	masters := ElementByPath(ElementByIndex(f, 0), 'Master Files');
 	if not Assigned(masters) then begin
@@ -2036,14 +2037,16 @@ begin
 		slCurrentMasters.Add(s);
 	end;
 	for i := 0 to lst.Count - 1 do begin
-		if (Lowercase(lst[i]) <> Lowercase(GetFileName(f))) and (slCurrentMasters.IndexOf(lst[i]) = -1) and (not StrEndsWith(Lowercase(lst[i]), '.dat')) and (not StrEndsWith(Lowercase(lst[i]), '.exe')) then begin
+		if (Lowercase(lst[i]) <> Lowercase(GetFileName(f)))
+		and (slCurrentMasters.IndexOf(lst[i]) = -1)
+		and (not StrEndsWith(Lowercase(lst[i]), '.exe')) then begin
 			master := ElementAssign(masters, HighInteger, nil, False);
 			SetElementEditValues(master, 'MAST', lst[i]);
-			AddMessage('    Re-added master: '+lst[i]);
+			AddMessage('Re-added master: '+lst[i]);
 		end;
 	end;
 	
-	// free stringlist
+	// free string-list
 	slCurrentMasters.Free;
 end;
 
@@ -2053,7 +2056,7 @@ end;
 	
 	Example usage:
 	f := FileByIndex(i);
-	RemoveMaster(f, 'Update.esm');
+	RemoveMaster(f, 'WeDontNeedYou.esm');
 }
 procedure RemoveMaster(f: IInterface; mast: String);
 var
@@ -2113,7 +2116,7 @@ begin
 		cbFiles := TComboBox.Create(frm);
 		cbFiles.Parent := frm;
 		cbFiles.Style := csDropDownList;
-		cbFiles.Items.Add('-- CREATE NEW FILE --');
+		cbFiles.Items.Add('< Create New File (ESP) >');
 		cbFiles.Top := lbl.Top + lbl.Height + 20;
 		cbFiles.Left := 8;
 		cbFiles.Width := 200;
@@ -2139,7 +2142,7 @@ begin
 		btnCancel.Top := btnOk.Top;
 		
 		if frm.ShowModal = mrOk then begin
-			if (cbFiles.Text = '-- CREATE NEW FILE --') then Result := AddNewFile
+			if (cbFiles.Text = '< Create New File (ESP) >') then Result := AddNewFile
 			else begin
 				for i := 0 to FileCount - 1 do begin
 					if (cbFiles.Text = GetFileName(FileByIndex(i))) then begin
@@ -2147,7 +2150,7 @@ begin
 						Break;
 					end;
 					if i = FileCount - 1 then begin
-						AddMessage('The script couldn''t find the file you entered.');
+						AddMessage('The script could not find the file you entered.');
 						Result := FileSelect(prompt);
 					end;
 				end;
@@ -2242,7 +2245,7 @@ begin
 		btnPrev.ModalResult := 70;
 		btnNext := ConstructButton(frm, frm, frm.Height - 97, frm.Width / 2 + 8, 25, 75, 'Page >>');
 		btnNext.ModalResult := 80;
-		cModal(frm, frm, frm.Height - 70);
+		CModal(frm, frm, frm.Height - 70);
 		sl.Clear;
 		
 		// show first page
@@ -2455,7 +2458,7 @@ begin
 		cb3.Text := '';
 		
 		// construct ok and cancel buttons
-		cModal(frm, frm, 70);
+		CModal(frm, frm, 70);
 		
 		// set up form based on input variables
 		if cb1.Items.IndexOf(sFile) > -1 then begin
@@ -2503,14 +2506,9 @@ begin
 		
 		try
 			v := wbVersionNumber;
-			s := Format('%sEdit version %d.%d.%d', [
-				wbAppName,
-				v shr 24,
-				v shr 16 and $FF,
-				v shr 8 and $FF
-			]);
+			s := GetVersionString(v);
 		except on Exception do
-			s := wbAppName + 'Edit 3.0.31 or earlier';
+			s := wbAppName + 'Edit 3.0.X or earlier';
 		end;
 		
 		lbl := TLabel.Create(frm);
@@ -2519,11 +2517,12 @@ begin
 		lbl.Left := 8;
 		lbl.WordWrap := True;
 		lbl.Width := 270;
-		lbl.Caption := 
-			'You''re using '+s+', but this script requires '+wbAppName+'Edit '+minimumVersion+' or newer.	'
-			'Click the Update button to be directed to get the latest version.';
-		AddMessage('You''re using '+s+', but this script requires '+wbAppName+'Edit '+minimumVersion+' or newer.');
-		AddMessage('You can get the latest version at '+url);
+		lbl.Caption :=
+			'You are using ' + s + ', but this script requires ' + wbAppName + 'Edit ' + minimumVersion + ' or newer.'
+			#13#10
+			'Click the Update button to be redirected and get the latest version.';
+		AddMessage('You are using ' + s + ', but this script requires ' + wbAppName + 'Edit ' + minimumVersion + ' or newer.');
+		AddMessage('You can get the latest version at ' + url);
 		
 		btnOk := TButton.Create(frm);
 		btnOk.Parent := frm;
@@ -2531,8 +2530,7 @@ begin
 		btnOk.Left := 40;
 		btnOk.Caption := 'Update';
 		btnOk.ModalResult := mrOk;
-		btnOk.Hint := 'Click to open '+url+' in '#13#10+
-		'your internet browser so you can download the latest xEdit beta version.';
+		btnOk.Hint := 'Click to open ' + url + ' in your web browser so you can download the latest xEdit beta version.';
 		btnOk.ShowHint := true;
 		
 		btnCancel := TButton.Create(frm);
@@ -2545,8 +2543,7 @@ begin
 		frm.Height := btnOk.Top + btnOk.Height + 50;
 		
 		if frm.ShowModal = mrOk then begin
-			ShellExecute(TForm(frm).Handle, 'open', 
-				url, '', '', SW_SHOWNORMAL);
+			ShellExecute(TForm(frm).Handle, 'open', url, '', '', SW_SHOWNORMAL);
 		end;
 	finally 
 		frm.Free;
@@ -2589,8 +2586,9 @@ end;
 	Example usage:
 	group := ConstructGroup(frm, frm, 8, 8, 300, 300, 'My Group');
 }
-function ConstructGroup(h, p: TObject; top, left, height, 
-	width: Integer; caption, t: string): TGroupBox;
+function ConstructGroup(h, p: TObject;
+	top, left, height, width: Integer;
+	caption, t: string): TGroupBox;
 var
 	gb: TGroupBox;
 begin
@@ -2612,14 +2610,15 @@ begin
 end;
 
 {
-	cGroup:
+	CGroup:
 	Shortened version of ConstructGroup
 	
 	Example usage:
-	group := cGroup(frm, frm, 8, 8, 300, 300, 'My Group');
+	group := CGroup(frm, frm, 8, 8, 300, 300, 'My Group');
 }
-function cGroup(h, p: TObject; top, left, height, 
-	width: Integer; caption, t: string): TGroupBox;
+function CGroup(h, p: TObject;
+	top, left, height, width: Integer;
+	caption, t: string): TGroupBox;
 begin
 	Result := ConstructGroup(h, p, top, left, height, width, caption, t);
 end;
@@ -2632,8 +2631,9 @@ end;
 	Example usage:
 	img := ConstructImage(frm, frm, 8, 8, 300, 300, gear, 'Options');
 }
-function ConstructImage(h, p: TObject; top, left, height, 
-	width: Integer; picture: TPicture; t: string): TImage;
+function ConstructImage(h, p: TObject;
+	top, left, height, width: Integer;
+	picture: TPicture; t: string): TImage;
 var
 	img: TImage;
 begin
@@ -2653,14 +2653,15 @@ begin
 end;
 
 {
-	cImage:
+	CImage:
 	Shortened version of ConstructImage
 	
 	Example usage:
-	img := cImage(frm, frm, 8, 8, 300, 300, gear, 'Options');
+	img := CImage(frm, frm, 8, 8, 300, 300, gear, 'Options');
 }
-function cImage(h, p: TObject; top, left, height, 
-	width: Integer; picture: TPicture; t: String): TImage;
+function CImage(h, p: TObject;
+	top, left, height, width: Integer;
+	picture: TPicture; t: String): TImage;
 begin
 	Result := ConstructImage(h, p, top, left, height, width, picture, t);
 end;
@@ -2673,8 +2674,9 @@ end;
 	Example usage:
 	rg := ConstructRadioGroup(frm, frm, 8, 8, 200, 400, 'Options');
 }
-function ConstructRadioGroup(h, p: TObject; top, left, height, 
-	width: Integer; text: String): TRadioGroup;
+function ConstructRadioGroup(h, p: TObject;
+	top, left, height, width: Integer;
+	text: String): TRadioGroup;
 var
 	rg: TRadioGroup;
 begin
@@ -2692,14 +2694,15 @@ begin
 end;
 
 {
-	cRadioGroup:
+	CRadioGroup:
 	Shortened version of ConstructRadioGroup.
 	
 	Example usage:
-	rg := cRadioGroup(frm, frm, 8, 8, 200, 400, 'Options');
+	rg := CRadioGroup(frm, frm, 8, 8, 200, 400, 'Options');
 }
-function cRadioGroup(h, p: TObject; top, left, height, 
-	width: Integer; text: String): TRadioGroup;
+function CRadioGroup(h, p: TObject;
+	top, left, height, width: Integer;
+	text: String): TRadioGroup;
 begin
 	Result := ConstructRadioGroup(h, p, top, left, height, width, text);
 end;
@@ -2712,8 +2715,9 @@ end;
 	Example usage:
 	rb := ConstructRadioButton(frm, frm, 8, 8, 200, 400, 'This way', false);
 }
-function ConstructRadioButton(h, p: TObject; top, left, height, 
-	width: Integer; text: String; checked: boolean): TRadioButton;
+function ConstructRadioButton(h, p: TObject;
+	top, left, height, width: Integer;
+	text: String; checked: boolean): TRadioButton;
 var
 	rb: TRadioButton;
 begin
@@ -2730,14 +2734,15 @@ begin
 end;
 
 {
-	cRadioButton:
+	CRadioButton:
 	Shortened version of ConstructRadioButton.
 	
 	Example usage:
-	rg := cRadioButton(frm, frm, 8, 8, 200, 400, 'This way', false);
+	rg := CRadioButton(frm, frm, 8, 8, 200, 400, 'This way', false);
 }
-function cRadioButton(h, p: TObject; top, left, height, 
-	width: Integer; text: String; checked: boolean): TRadioButton;
+function CRadioButton(h, p: TObject;
+	top, left, height, width: Integer;
+	text: String; checked: boolean): TRadioButton;
 begin
 	Result := ConstructRadioButton(h, p, top, left, height, width, text, checked);
 end;
@@ -2750,8 +2755,10 @@ end;
 	Example usages:
 	memo := ConstructMemo(frm, frm, 0, 0, 200, 400, True, True, ssBoth, '');
 }
-function ConstructMemo(h, p: TObject; top, left, height, 
-	width: Integer; ww, ro: boolean; ss: TScrollStyle; text: String): TMemo;
+function ConstructMemo(h, p: TObject;
+	top, left, height, width: Integer;
+	ww, ro: boolean; ss: TScrollStyle;
+	text: String): TMemo;
 var
 	memo: TMemo;
 begin
@@ -2770,14 +2777,16 @@ begin
 end;
 
 {
-	cMemo:
+	CMemo:
 	Shortened function name for ConstructMemo.
 	
 	Example usages:
 	memo := ConstructMemo(frm, frm, 0, 0, 200, 400, True, True, ssBoth, '');
 }
-function cMemo(h, p: TObject; top, left, height, 
-	width: Integer; ww, ro: boolean; ss: TScrollStyle; text: String): TMemo;
+function CMemo(h, p: TObject;
+	top, left, height, width: Integer;
+	ww, ro: boolean; ss: TScrollStyle;
+	text: String): TMemo;
 begin
 	Result := ConstructMemo(h, p, top, left, height, width, ww, ro, ss, text);
 end;
@@ -2790,8 +2799,8 @@ end;
 	Example usage:
 	sb := ConstructScrollBox(frm, frm, 400, alTop);
 }
-function ConstructScrollBox(h, p: TObject; height: Integer; 
-	a: TAlign): TScrollBox;
+function ConstructScrollBox(h, p: TObject;
+	height: Integer; a: TAlign): TScrollBox;
 var
 	sb: TScrollBox;
 begin
@@ -2804,14 +2813,14 @@ begin
 end;
 
 {
-	cScrollBox:
+	CScrollBox:
 	Shortened function name for ConstructScrollBox.
 	
 	Example usage:
-	sb := cScrollBox(frm, frm, 400, alTop);
+	sb := CScrollBox(frm, frm, 400, alTop);
 }
-function cScrollBox(h, p: TObject; height: Integer; 
-	a: TAlign): TScrollBox;
+function CScrollBox(h, p: TObject;
+	height: Integer; a: TAlign): TScrollBox;
 begin
 	Result := ConstructScrollBox(h, p, height, a);
 end;
@@ -2825,8 +2834,10 @@ end;
 	cb1 := ConstructCheckBox(frm, pnlBottom, 8, 8, 160, 
 		'Remove persistent references', cbChecked);
 }
-function ConstructCheckBox(h, p: TObject; top, left, width: Integer; 
-	s: String; state: TCheckBoxState; t: string): TCheckBox;
+function ConstructCheckBox(h, p: TObject;
+	top, left, width: Integer; 
+	s: string; state: TCheckBoxState;
+	t: string): TCheckBox;
 var
 	cb: TCheckBox;
 begin
@@ -2846,15 +2857,17 @@ begin
 end;
 
 {
-	cCheckBox:
+	CCheckBox:
 	Shortened function name for ConstructCheckBox.
 	
 	Example usage:
-	cb1 := cCheckBox(frm, pnlBottom, 8, 8, 160, 
+	cb1 := CCheckBox(frm, pnlBottom, 8, 8, 160, 
 		'Remove persistent references', cbChecked);
 }
-function cCheckBox(h, p: TObject; top, left, width: Integer; 
-	s: String; state: TCheckBoxState; t: string): TCheckBox;
+function CCheckBox(h, p: TObject;
+	top, left, width: Integer;
+	s: string; state: TCheckBoxState;
+	t: string): TCheckBox;
 begin
 	Result := ConstructCheckBox(h, p, top, left, width, s, state, t);
 end;
@@ -2868,8 +2881,9 @@ end;
 	lbl3 := ConstructLabel(frm, pnlBottom, 65, 8, 0, 0, 
 		'Reference removal options:');
 }
-function ConstructLabel(h, p: TObject; top, left, height, 
-	width: Integer; s, t: String): TLabel;
+function ConstructLabel(h, p: TObject;
+	top, left, height, width: Integer;
+	s, t: String): TLabel;
 var
 	lb: TLabel;
 begin
@@ -2893,15 +2907,16 @@ begin
 end;
 
 {
-	cLabel:
+	CLabel:
 	Shortened function name for ConstructLabel.
 	
 	Example usage:
-	lbl3 := cLabel(frm, pnlBottom, 65, 8, 0, 0, 
+	lbl3 := CLabel(frm, pnlBottom, 65, 8, 0, 0, 
 		'Reference removal options:');
 }
-function cLabel(h, p: TObject; top, left, height, 
-	width: Integer; s, t: String): TLabel;
+function CLabel(h, p: TObject;
+	top, left, height, width: Integer;
+	s, t: String): TLabel;
 begin
 	Result := ConstructLabel(h, p, top, left, height, width, s, t);
 end;
@@ -2914,8 +2929,9 @@ end;
 	Example usage:
 	ed3 := ConstructEdit(frm, frm, 100, 8, 0, 0, 'Edit me!');
 }
-function ConstructEdit(h, p: TObject; top, left, height, 
-	width: Integer; s, t: String): TLabel;
+function ConstructEdit(h, p: TObject;
+	top, left, height, width: Integer;
+	s, t: String): TLabel;
 var
 	ed: TLabel;
 begin
@@ -2936,14 +2952,15 @@ begin
 end;
 
 {
-	cEdit:
+	CEdit:
 	Shortened function name for ConstructEdit.
 	
 	Example usage:
-	ed3 := cEdit(frm, frm, 100, 8, 0, 0, 'Edit me!');
+	ed3 := CEdit(frm, frm, 100, 8, 0, 0, 'Edit me!');
 }
-function cEdit(h, p: TObject; top, left, height, 
-	width: Integer; s, t: String): TLabel;
+function CEdit(h, p: TObject;
+	top, left, height, width: Integer;
+	s, t: String): TLabel;
 begin
 	Result := ConstructEdit(h, p, top, left, height, width, s, t);
 end;
@@ -2956,8 +2973,9 @@ end;
 	Example usage:
 	btn1 := ConstructButton(frm, pnlBottom, 8, 8, 160, 'OK');
 }
-function ConstructButton(h, p: TObject; 
-	top, left, height, width: Integer; s: String): TButton;
+function ConstructButton(h, p: TObject;
+	top, left, height, width: Integer;
+	s: String): TButton;
 var
 	btn: TButton;
 begin
@@ -2973,14 +2991,15 @@ begin
 end;
 
 {
-	cButton:
+	CButton:
 	Shortened function name for ConstructButton.
 	
 	Example usage:
-	cButton(frm, pnlBottom, 8, 8, 160, 'OK');
+	CButton(frm, pnlBottom, 8, 8, 160, 'OK');
 }
-function cButton(h, p: TObject; 
-	top, left, height, width: Integer; s: String): TButton;
+function CButton(h, p: TObject; 
+	top, left, height, width: Integer;
+	s: String): TButton;
 begin
 	Result := ConstructButton(h, p, top, left, height, width, s);
 end;
@@ -2993,26 +3012,28 @@ end;
 	Example usage:
 	edPosition := ConstructLabelEditPair(frm, 8, 8, 150, 'Minimum position offset:', '0.5');
 }
-function ConstructLabelEditPair(c: TObject; 
-	top, left, spacing, edw: Integer; caption, text, t: string): TEdit;
+function ConstructLabelEditPair(c: TObject;
+	top, left, spacing, edw: Integer;
+	caption, text, t: string): TEdit;
 var
 	lbl: TLabel;
 	ed: TEdit;
 begin
-	lbl := cLabel(c, c, top, left, 0, spacing, caption, t);
-	ed := cEdit(c, c, top, left + spacing, 0, edw, text, t);
+	lbl := CLabel(c, c, top, left, 0, spacing, caption, t);
+	ed := CEdit(c, c, top, left + spacing, 0, edw, text, t);
 	Result := ed;
 end;
 
 {
-	cPair:
+	CPair:
 	Shortened function name for ConstructLabelEditPair.
 	
 	Example usage:
-	edPosition := cPair(frm, 8, 8, 150, 'Minimum position offset:', '0.5');
+	edPosition := CPair(frm, 8, 8, 150, 'Minimum position offset:', '0.5');
 }
-function cPair(c: TObject; 
-	top, left, spacing, edw: Integer; caption, text, t: string): TEdit;
+function CPair(c: TObject;
+	top, left, spacing, edw: Integer;
+	caption, text, t: string): TEdit;
 begin
 	Result := ConstructLabelEditPair(c, top, left, spacing, edw, caption, text, t);
 end;
@@ -3030,13 +3051,14 @@ var
 	btnOk: TButton;
 	btnCancel: TButton;
 begin
+	// ok
 	btnOk := TButton.Create(h);
 	btnOk.Parent := p;
 	btnOk.Caption := 'OK';
 	btnOk.ModalResult := mrOk;
 	btnOk.Left := h.Width div 2 - btnOk.Width - 8;
 	btnOk.Top := top;
-	
+	// cancel
 	btnCancel := TButton.Create(h);
 	btnCancel.Parent := p;
 	btnCancel.Caption := 'Cancel';
@@ -3046,10 +3068,10 @@ begin
 end;
 
 {
-	cModal:
+	CModal:
 	Shortened function name for ConstructModalButtons.
 }
-procedure cModal(h, p: TObject; top: Integer);
+procedure CModal(h, p: TObject; top: Integer);
 begin
 	ConstructModalButtons(h, p, top);
 end;

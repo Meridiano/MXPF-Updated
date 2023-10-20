@@ -1,7 +1,7 @@
 {
 	Mator's xEdit Patching Framework
 	by Mator-The-Eternal
-	edited by Meridiano 18/10/2023
+	edited by Meridiano 20/10/2023
 }
 
 unit mxpf;
@@ -24,7 +24,7 @@ const
 	
 	{ DEVELOPER CONSTANTS - DON'T CHANGE }
 	// version constant
-	mxVersion = '0.2.1';
+	mxVersion = '0.2.2';
 	
 	// mode constants
 	mxExclusionMode = 1;
@@ -70,7 +70,7 @@ begin
 	if (mxDebugMessages.Count = 0) then exit;
 	
 	// save to mxpf logs folder in scripts path
-	filename := ScriptsPath + 'logs\mxpf\mxpf-debug-' + FileDateTimeStr(Now) + '.txt';
+	filename := ScriptsPath + 'logs\mxpf-' + wbAppName + '\mxpf-debug_' + FileDateTimeStr(Now) + '.txt';
 	AddMessage('MXPF Debug Log saved to ' + filename);
 	ForceDirectories(ExtractFilePath(filename));
 	mxDebugMessages.SaveToFile(filename);
