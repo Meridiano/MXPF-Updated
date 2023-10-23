@@ -6,7 +6,7 @@
 
 unit mxpf;
 
-uses 'lib-sf1\mteFunctions';
+uses 'lib-sse\mteFunctions';
 
 const
 	{ USER CONSTANTS - FEEL FREE TO CHANGE }
@@ -31,10 +31,10 @@ const
 	mxInclusionMode = 2;
 	
 	// comma separated list of Bethesda files
-	mxBethesdaCoreFiles = 'Starfield.esm'#44'Starfield.exe'#44'BlueprintShips-Starfield.esm';
+	mxBethesdaCoreFiles = 'Skyrim.esm'#44'SkyrimSE.exe'#44'Update.esm'#44'Dawnguard.esm'#44'HearthFires.esm'#44'Dragonborn.esm';
 	
 	// comma separated list of hardcoded exe files
-	mxHardcodedExeFiles = 'Starfield.exe';
+	mxHardcodedExeFiles = 'SkyrimSE.exe';
 
 var
 	mxFiles, mxMasters, mxDebugMessages, mxFailureMessages: TStringList;

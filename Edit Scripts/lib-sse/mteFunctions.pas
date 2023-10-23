@@ -122,7 +122,7 @@
 unit mteFunctions;
 
 const
-	bethesdaFiles = 'Starfield.esm'#44'Starfield.exe'#44'BlueprintShips-Starfield.esm';
+	bethesdaFiles = 'Skyrim.esm'#44'SkyrimSE.exe'#44'Update.esm'#44'Dawnguard.esm'#44'HearthFires.esm'#44'Dragonborn.esm';
 	GamePath = DataPath + '..\';
 
 type
@@ -1775,7 +1775,7 @@ var
 	n: integer;
 begin
 	Result := false;
-	kwda := ElementByPath(e, 'Keywords\KWDA');
+	kwda := ElementByPath(e, 'KWDA');
 	for n := 0 to ElementCount(kwda) - 1 do
 		if GetElementEditValues(LinksTo(ElementByIndex(kwda, n)), 'EDID') = edid then begin
 			Result := true;
@@ -1798,7 +1798,7 @@ var
 	i: integer;
 begin
 	Result := false;
-	items := ElementByPath(rec, 'Container Items\Items');
+	items := ElementByPath(rec, 'Items');
 	if not Assigned(items) then 
 		exit;
 	

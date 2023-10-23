@@ -8,4 +8,5 @@ Copy the files from the [Edit Scripts](Edit%20Scripts) folder to xEdit's "Edit S
 + xEdit. Download it from [GitHub](https://github.com/TES5Edit/TES5Edit/releases). Version 4.1.X is required.
 
 ## Supported Games
++ Skyrim Special Edition > [Lib-SSE](Edit%20Scripts/lib-sse)
 + Starfield > [Lib-SF1](Edit%20Scripts/lib-sf1)
