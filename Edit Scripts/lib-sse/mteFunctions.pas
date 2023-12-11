@@ -1,6 +1,6 @@
 {
 	Mator-The-Eternal's Functions
-	Edited 23/10/2023 by Meridiano
+	Edited 11/12/2023 by Meridiano
 	
 	A set of useful functions for use in xEdit scripts.
 	
@@ -2093,8 +2093,8 @@ begin
 	frm := TForm.Create(nil);
 	try
 		frm.Caption := 'Select File';
-		frm.Width := 300;
-		frm.Height := 170;
+		frm.Width := 320;
+		frm.Height := 185;
 		frm.Position := poScreenCenter;
 		
 		lbl := TLabel.Create(frm);
@@ -2105,7 +2105,7 @@ begin
 		end
 		else begin
 			lbl.Height := 30;
-			frm.Height := 160;
+			frm.Height := 175;
 		end;
 		lbl.Left := 8;
 		lbl.Top := 8;
@@ -2119,7 +2119,7 @@ begin
 		cbFiles.Items.Add('< Create New File (ESP) >');
 		cbFiles.Top := lbl.Top + lbl.Height + 20;
 		cbFiles.Left := 8;
-		cbFiles.Width := 200;
+		cbFiles.Width := frm.Width - 40;
 		for i := 0 to FileCount - 1 do begin
 			s := GetFileName(FileByIndex(i));
 			if (Pos(s, bethesdaFiles) > 0) then Continue;
@@ -2197,8 +2197,8 @@ begin
 	frm := TForm.Create(nil);
 	try
 		frm.Position := poScreenCenter;
-		frm.Width := 300;
-		frm.Height := 600;
+		frm.Width := 320;
+		frm.Height := 615;
 		frm.BorderStyle := bsDialog;
 		frm.Caption := 'Multiple file selection';
 		
@@ -2396,8 +2396,8 @@ begin
 	frm := TForm.Create(nil);
 	try
 		frm.Caption := 'Choose a record';
-		frm.Width := 380;
-		frm.Height := 140;
+		frm.Width := 400;
+		frm.Height := 155;
 		frm.Position := poScreenCenter;
 		frm.BorderStyle := bsDialog;
 		
@@ -2500,8 +2500,8 @@ begin
 	frm := TForm.Create(nil);
 	try
 		frm.Caption := 'xEdit out of Date!';
-		frm.Width := 300;
-		frm.Height := 150;
+		frm.Width := 320;
+		frm.Height := 165;
 		frm.Position := poScreenCenter;
 		
 		try
