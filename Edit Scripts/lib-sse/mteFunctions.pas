@@ -1,6 +1,6 @@
 {
 	Mator-The-Eternal's Functions
-	Edited 11/12/2023 by Meridiano
+	Edited 01/03/2024 by Meridiano
 	
 	A set of useful functions for use in xEdit scripts.
 	
@@ -28,7 +28,8 @@
 	- [RemoveFromEnd]: removes a substring from the end of a string, if found.
 	- [AppendIfMissing]: appends a substring to the end of a string, if it's not already there.
 	- [ItPos]: finds the position of an iteration of a substring in a string.
-	- [rPos]: finds the last position of a substring in a string by starting at the end of the string and moving to the front.
+	- [RPos]: finds the last position of a substring in a string by starting at the end of the string and moving to the front.
+	- [GetSubstringCount]: returns count of substring occurrences in string.
 	- [CopyFromTo]: copies all characters in a string from a starting position to an ending position.
 	- [SetChar]: sets a character in a string to a different character and returns the resulting string.
 	- [GetChar]: gets a character in a string and returns it.
@@ -122,7 +123,7 @@
 unit mteFunctions;
 
 const
-	bethesdaFiles = 'Skyrim.esm'#44'SkyrimSE.exe'#44'Update.esm'#44'Dawnguard.esm'#44'HearthFires.esm'#44'Dragonborn.esm';
+	bethesdaFiles = 'Skyrim.esm'#13#10'SkyrimSE.exe'#13#10'Update.esm'#13#10'Dawnguard.esm'#13#10'HearthFires.esm'#13#10'Dragonborn.esm';
 	GamePath = DataPath + '..\';
 
 type
@@ -450,7 +451,7 @@ end;
 procedure wCopyFile(src, dst: string; silent: boolean);
 begin
 	if not silent then AddMessage('Copying ' + src + ' to ' + dst);
-	ShellExecute(TForm(frmMain).Handle, 'open', 'cmd', '/C copy /Y "'+src+'" "'+dst+'"', ExtractFilePath(src), SW_HIDE);
+	ShellExecute(TForm(frmMain).Handle, 'open', 'cmd', '/C copy /Y "' + src + '" "' + dst + '"', ExtractFilePath(src), SW_HIDE);
 end;
 
 {
@@ -812,7 +813,7 @@ begin
 end;
 
 {
-	rPos:
+	RPos:
 	A reverse position function.
 	
 	This function will allow you to find the last position
@@ -820,9 +821,9 @@ end;
 	
 	Example usage:
 	s := 'C:\SomePath\to\a\file.txt';
-	AddMessage(Copy(s, rPos('\', s) + 1, Length(s)));
+	AddMessage(Copy(s, RPos('\', s) + 1, Length(s)));
 }
-function rPos(substr, str: string): integer;
+function RPos(substr, str: string): integer;
 var
 	i: integer;
 begin
@@ -834,6 +835,28 @@ begin
 			Result := i;
 			break;
 		end;
+	end;
+end;
+
+{
+	GetSubstringCount:
+	Returns count of substring occurrences in string.
+	
+	Example usage:
+	num := GetSubstringCount('apple', 'Grow apple, eat apple');
+	if (num <> 2) then return;
+}
+function GetSubstringCount(sub, str: string): integer;
+var
+	ofs: integer;
+begin
+	Result := 0;
+	ofs := Pos(sub, str);
+	while ofs <> 0 do begin
+		Inc(Result);
+		ofs := ofs + Length(sub);
+		str := Copy(str, ofs, Length(str));
+		ofs := Pos(sub, str);
 	end;
 end;
 
@@ -2094,31 +2117,31 @@ begin
 	try
 		frm.Caption := 'Select File';
 		frm.Width := 320;
-		frm.Height := 185;
+		frm.Height := 130;
+		frm.BorderStyle := bsDialog;
 		frm.Position := poScreenCenter;
 		
 		lbl := TLabel.Create(frm);
 		lbl.Parent := frm;
-		lbl.Width := 284;
-		if Pos(#44, prompt) > 0 then begin
-			lbl.Height := 60;
-		end
-		else begin
-			lbl.Height := 30;
-			frm.Height := 175;
-		end;
-		lbl.Left := 8;
-		lbl.Top := 8;
+		lbl.AutoSize := False;
+		lbl.WordWrap := False;
+		lbl.Width := frm.Width - 40;
+		lbl.Height := 30;
+		
+		// increase height if new lines found
+		lbl.Height := lbl.Height + 15 * GetSubstringCount(#13#10, prompt);
+		frm.Height := frm.Height + lbl.Height;
+		
+		lbl.Left := 10;
+		lbl.Top := 10;
 		lbl.Caption := prompt;
-		lbl.Autosize := false;
-		lbl.Wordwrap := True;
 		
 		cbFiles := TComboBox.Create(frm);
 		cbFiles.Parent := frm;
 		cbFiles.Style := csDropDownList;
 		cbFiles.Items.Add('< Create New File (ESP) >');
-		cbFiles.Top := lbl.Top + lbl.Height + 20;
-		cbFiles.Left := 8;
+		cbFiles.Top := lbl.Top + lbl.Height;
+		cbFiles.Left := 10;
 		cbFiles.Width := frm.Width - 40;
 		for i := 0 to FileCount - 1 do begin
 			s := GetFileName(FileByIndex(i));
@@ -2127,22 +2150,11 @@ begin
 		end;
 		cbFiles.ItemIndex := 0;
 		
-		btnOk := TButton.Create(frm);
-		btnOk.Parent := frm;
-		btnOk.Left := 150 - btnOk.Width - 8;
-		btnOk.Top := cbFiles.Top + 40;
-		btnOk.Caption := 'OK';
-		btnOk.ModalResult := mrOk;
-		
-		btnCancel := TButton.Create(frm);
-		btnCancel.Parent := frm;
-		btnCancel.Caption := 'Cancel';
-		btnCancel.ModalResult := mrCancel;
-		btnCancel.Left := btnOk.Left + btnOk.Width + 16;
-		btnCancel.Top := btnOk.Top;
+		CModal(frm, frm, cbFiles.Top + 40);
 		
 		if frm.ShowModal = mrOk then begin
-			if (cbFiles.Text = '< Create New File (ESP) >') then Result := AddNewFile
+			if (cbFiles.Text = '< Create New File (ESP) >')
+			then Result := AddNewFile
 			else begin
 				for i := 0 to FileCount - 1 do begin
 					if (cbFiles.Text = GetFileName(FileByIndex(i))) then begin
@@ -2177,7 +2189,7 @@ end;
 }
 function MultiFileSelect(var sl: TStringList; prompt: string): Boolean;
 const
-	spacing = 24;
+	spacing = 20;
 var
 	frm: TForm;
 	lastTop, contentHeight: Integer;
@@ -2197,7 +2209,7 @@ begin
 	frm := TForm.Create(nil);
 	try
 		frm.Position := poScreenCenter;
-		frm.Width := 320;
+		frm.Width := 350;
 		frm.Height := 615;
 		frm.BorderStyle := bsDialog;
 		frm.Caption := 'Multiple file selection';
@@ -2209,6 +2221,18 @@ begin
 			sbArray[p].Align := alTop;
 			sbArray[p].Height := 0;
 			
+			// create label
+			lbl := TLabel.Create(sbArray[p]);
+			lbl.Parent := sbArray[p];
+			lbl.Caption := Format('%s [%s/%s]', [prompt, IntToStr(p + 1), IntToStr(mp + 1)]);
+			lbl.Left := 10;
+			lbl.Top := 10;
+			lbl.Width := frm.Width - 60;
+			lbl.Height := 20;
+			lbl.AutoSize := False;
+			lbl.WordWrap := False;
+			lastTop := lbl.Top + lbl.Height - spacing;
+			
 			if (p < mp) then me := 499 else me := mi - p * 500;
 			// create checkboxes
 			for e := 0 to me do begin
@@ -2218,39 +2242,29 @@ begin
 				cbArray[p,e].Parent := sbArray[p];
 				cbArray[p,e].Caption := Format(' [%s] %s', [IntToHex(i, wid), GetFileName(f)]);
 				cbArray[p,e].Top := lastTop + spacing;
-				cbArray[p,e].Width := 260;
+				cbArray[p,e].Left := 15;
+				cbArray[p,e].Width := frm.Width - 60;
 				lastTop := lastTop + spacing;
-				cbArray[p,e].Left := 12;
 				cbArray[p,e].Checked := sl.IndexOf(GetFileName(f)) > -1;
 			end;
-			
-			// create label
-			lbl := TLabel.Create(sbArray[p]);
-			lbl.Parent := sbArray[p];
-			lbl.Caption := Format('%s [%s/%s]', [prompt, IntToStr(p + 1), IntToStr(mp + 1)]);
-			lbl.Left := 8;
-			lbl.Top := 8;
-			lbl.Width := 280;
-			lbl.WordWrap := true;
-			lastTop := lbl.Top + lbl.Height + 8 - spacing;
 		end;
 		
 		if mp = 0 then begin
-			contentHeight := spacing * FileCount + 100;
+			contentHeight := spacing * FileCount + 125;
 			if frm.Height > contentHeight then frm.Height := contentHeight;
 		end;
 		
 		// create modal buttons
-		btnPrev := ConstructButton(frm, frm, frm.Height - 97, frm.Width / 2 - 83, 25, 75, '<< Page');
-		btnPrev.ModalResult := 70;
-		btnNext := ConstructButton(frm, frm, frm.Height - 97, frm.Width / 2 + 8, 25, 75, 'Page >>');
-		btnNext.ModalResult := 80;
 		CModal(frm, frm, frm.Height - 70);
+		btnPrev := ConstructButton(frm, frm, frm.Height - 95, frm.Width / 2 - 85, 25, 75, '<< Page');
+		btnPrev.ModalResult := 70;
+		btnNext := ConstructButton(frm, frm, frm.Height - 95, frm.Width / 2 + 10, 25, 75, 'Page >>');
+		btnNext.ModalResult := 80;
 		sl.Clear;
 		
 		// show first page
 		p := 0;
-		sbArray[p].Height := 500;
+		sbArray[p].Height := frm.Height - 100;
 		modal := frm.ShowModal;
 		
 		while true do begin
@@ -2260,7 +2274,7 @@ begin
 			if p < 0 then p := 0 else if p > mp then p := mp;
 			for i := 0 to mp do begin
 				if i = p
-				then sbArray[i].Height := 500
+				then sbArray[i].Height := frm.Height - 100
 				else sbArray[i].Height := 0;
 			end;
 			modal := frm.ShowModal;
@@ -2301,7 +2315,7 @@ end;
 	aRecord := RecordSelect('', 'ARMO');
 	aRecord := RecordSelect('Skyrim.esm', 'ARMO');
 }
-procedure rsLoadRecords(Sender: TObject);
+procedure RSLoadRecords(Sender: TObject);
 var
 	f, g: IInterface;
 	fn: string;
@@ -2325,7 +2339,7 @@ begin
 	end;
 end;
 
-procedure rsLoadGroups(Sender: TObject);
+procedure RSLoadGroups(Sender: TObject);
 var
 	fn, sGroups: string;
 	f, g: IInterface;
@@ -2404,17 +2418,17 @@ begin
 		// create label instructing user what to do
 		lbl := TLabel.Create(frm);
 		lbl.Parent := frm;
-		lbl.Left := 8;
-		lbl.Top := 8;
-		lbl.Width := frm.Width - 16;
+		lbl.Left := 10;
+		lbl.Top := 10;
+		lbl.Width := frm.Width - 20;
 		lbl.Caption := prompt;
 		
-		// create panel to hold comboboxes
+		// create panel to hold combo-boxes
 		pnl := TPanel.Create(frm);
 		pnl.Parent := frm;
-		pnl.Left := 8;
-		pnl.Top := 32;
-		pnl.Width := frm.Width - 16;
+		pnl.Left := 10;
+		pnl.Top := 35;
+		pnl.Width := frm.Width - 20;
 		pnl.Height := 30;
 		pnl.BevelOuter := bvNone;
 		
@@ -2423,19 +2437,19 @@ begin
 		cb1.Parent := pnl;
 		cb1.Left := 0;
 		cb1.Top := 0;
-		cb1.Width := 100;
+		cb1.Width := 120;
 		cb1.Autocomplete := True;
 		cb1.Style := csDropDown;
 		cb1.Sorted := False;
 		cb1.AutoDropDown := True;
 		cb1.Items.Text := sFileList;
 		cb1.Text := '<File>';
-		cb1.OnSelect := rsLoadGroups;
+		cb1.OnSelect := RSLoadGroups;
 		
 		// create groups combobox
 		cb2 := TComboBox.Create(frm);
 		cb2.Parent := pnl;
-		cb2.Left := cb1.Left + cb1.Width + 8;
+		cb2.Left := cb1.Left + cb1.Width + 10;
 		cb2.Top := cb1.Top;
 		cb2.Width := 70;
 		cb2.Autocomplete := True;
@@ -2443,14 +2457,14 @@ begin
 		cb2.Sorted := True;
 		cb2.AutoDropDown := True;
 		cb2.Text := '';
-		cb2.OnSelect := rsLoadRecords;
+		cb2.OnSelect := RSLoadRecords;
 		
 		// create records combobox
 		cb3 := TComboBox.Create(frm);
 		cb3.Parent := pnl;
-		cb3.Left := cb2.Left + cb2.Width + 8;
+		cb3.Left := cb2.Left + cb2.Width + 10;
 		cb3.Top := cb1.Top;
-		cb3.Width := 149;
+		cb3.Width := 150;
 		cb3.Autocomplete := True;
 		cb3.Style := csDropDown;
 		cb3.Sorted := True;
@@ -2470,7 +2484,7 @@ begin
 			cb2.Enabled := false;
 			cb2.Items.Add(sGroup);
 			cb2.ItemIndex := cb2.Items.IndexOf(sGroup);
-			if sFile <> '' then rsLoadRecords(cb2);
+			if sFile <> '' then RSLoadRecords(cb2);
 		end;
 		
 		if frm.ShowModal = mrOk then
@@ -2894,7 +2908,7 @@ begin
 	lb.AutoSize := false;
 	lb.WordWrap := true;
 	if (height = 0) and (width = 0) then lb.AutoSize := true;
-	if (height = 0) and (Pos(#44, s) > 0) then lb.AutoSize := true;
+	if (height = 0) and (Pos(#13#10, s) > 0) then lb.AutoSize := true;
 	if height > 0 then lb.Height := height;
 	if width > 0 then lb.Width := width;
 	lb.Caption := s;
@@ -3056,14 +3070,14 @@ begin
 	btnOk.Parent := p;
 	btnOk.Caption := 'OK';
 	btnOk.ModalResult := mrOk;
-	btnOk.Left := h.Width div 2 - btnOk.Width - 8;
+	btnOk.Left := h.Width div 2 - btnOk.Width - 10;
 	btnOk.Top := top;
 	// cancel
 	btnCancel := TButton.Create(h);
 	btnCancel.Parent := p;
 	btnCancel.Caption := 'Cancel';
 	btnCancel.ModalResult := mrCancel;
-	btnCancel.Left := btnOk.Left + btnOk.Width + 16;
+	btnCancel.Left := btnOk.Left + btnOk.Width + 20;
 	btnCancel.Top := btnOk.Top;
 end;
 

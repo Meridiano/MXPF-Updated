@@ -1,7 +1,6 @@
 {
-	Mator's xEdit Patching Framework
-	by Mator-The-Eternal
-	edited by Meridiano 23/10/2023
+	Mator's xEdit Patching Framework by Mator-The-Eternal
+	Edited by Meridiano 01/03/2024
 }
 
 unit mxpf;
@@ -30,10 +29,10 @@ const
 	mxExclusionMode = 1;
 	mxInclusionMode = 2;
 	
-	// comma separated list of Bethesda files
-	mxBethesdaCoreFiles = 'Starfield.esm'#44'Starfield.exe'#44'BlueprintShips-Starfield.esm';
+	// CR-LF separated list of Bethesda files
+	mxBethesdaCoreFiles = 'Starfield.esm'#13#10'Starfield.exe'#13#10'BlueprintShips-Starfield.esm';
 	
-	// comma separated list of hardcoded exe files
+	// CR-LF separated list of hardcoded exe files
 	mxHardcodedExeFiles = 'Starfield.exe';
 
 var

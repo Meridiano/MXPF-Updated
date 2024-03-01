@@ -1,7 +1,6 @@
 {
-	Mator's xEdit Patching Framework
-	by Mator-The-Eternal
-	edited by Meridiano 23/10/2023
+	Mator's xEdit Patching Framework by Mator-The-Eternal
+	Edited by Meridiano 01/03/2024
 }
 
 unit mxpf;
@@ -30,10 +29,10 @@ const
 	mxExclusionMode = 1;
 	mxInclusionMode = 2;
 	
-	// comma separated list of Bethesda files
-	mxBethesdaCoreFiles = 'Skyrim.esm'#44'SkyrimSE.exe'#44'Update.esm'#44'Dawnguard.esm'#44'HearthFires.esm'#44'Dragonborn.esm';
+	// CR-LF separated list of Bethesda files
+	mxBethesdaCoreFiles = 'Skyrim.esm'#13#10'SkyrimSE.exe'#13#10'Update.esm'#13#10'Dawnguard.esm'#13#10'HearthFires.esm'#13#10'Dragonborn.esm';
 	
-	// comma separated list of hardcoded exe files
+	// CR-LF separated list of hardcoded exe files
 	mxHardcodedExeFiles = 'SkyrimSE.exe';
 
 var
