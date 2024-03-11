@@ -1,6 +1,6 @@
 {
 	Mator-The-Eternal's Functions
-	Edited 01/03/2024 by Meridiano
+	Edited 11/03/2024 by Meridiano
 	
 	A set of useful functions for use in xEdit scripts.
 	
@@ -36,7 +36,7 @@
 	- [DelimitedTextBetween]: gets the delimited text of a string-list between two indexes, including the entries at those indices.
 	- [GetTextIn]: gets a substring from a string between two characters.
 	- [RecordByLocalFormID]: gets a record by a hexadecimal FormID string.
-	- [FileByLocalIndex]: gets a file by its hexadecimal local xEdit index.
+	- [FileByLocalFileID]: gets a file by a hexadecimal FileID string.
 	- [GetAuthor]: gets the author of a file.
 	- [SetAuthor]: sets the author of a file.
 	- [FileByName]: gets a file from a filename.
@@ -47,8 +47,8 @@
 	- [OverrideRecordCount]: gets the number of override records in a file or record group.
 	- [GetRecords]: adds the records in a file or group to a string-list.
 	- [GroupSignature]: gets the signature of a group record.
-	- [HexFormID]: gets the FormID of a record as a hexadecimal string.
-	- [FileFormID]: gets the FileFormID of a record as a cardinal.
+	- [HexFormID]: gets the full FormID of a record as a hexadecimal string.
+	- [LocalFormID]: gets the local FormID of a record as a cardinal.
 	- [IsLocalRecord]: returns false for override and injected records.
 	- [IsOverrideRecord]: returns true for override records.
 	- [SmallName]: gets the FormID and editor ID as a string.
@@ -769,7 +769,7 @@ end;
 	Example usage:
 	s := 'This is a sample string.';
 	AddMessage(AppendIfMissing(s, 'string.')); // 'This is a sample string.'
-	AddMessage(AppendIfMissing(s, '	Hello.')); // 'This is a sample string.	Hello.'
+	AddMessage(AppendIfMissing(s, ' Hello.')); // 'This is a sample string. Hello.'
 }
 function AppendIfMissing(s1, s2: string): string;
 begin
@@ -964,7 +964,7 @@ end;
 
 {
 	RecordByLocalFormID:
-	Gets a record by its hexadecimal FormID.
+	Gets a record by a hexadecimal local FormID.
 	
 	Example usage:
 	e := RecordByLocalFormID('0002BFA2');
@@ -977,10 +977,10 @@ var
 begin
 	ps := Copy(id, 1, 2);
 	if (ps = 'FE') then begin
-		f := FileByLocalIndex(Copy(id, 1, 5));
+		f := FileByLocalFileID(Copy(id, 1, 5));
 		id := '000' + Copy(id, 6, 3);
 	end else begin
-		f := FileByLocalIndex(ps);
+		f := FileByLocalFileID(ps);
 		id := Copy(id, 3, 6);
 	end;
 	id := '$' + IntToHex(MasterCount(f), 2) + id;
@@ -988,21 +988,22 @@ begin
 end;
 
 {
-	FileByLocalIndex:
-	Gets a file by its hexadecimal local xEdit index.
+	FileByLocalFileID:
+	Gets a file by a hexadecimal local FileID.
 	
 	Example usage:
-	f := FileByLocalIndex('FE001');
+	f := FileByLocalFileID('FE001');
 	AddMessage(Name(f));
 }
-function FileByLocalIndex(str: string): IInterface;
+function FileByLocalFileID(str: string): IInterface;
 var
 	fi: integer;
 	f: IInterface;
 begin
+	if Copy(str, 1, 2) = 'FE' then Insert(' ', str, 3);
 	for fi := 0 to FileCount - 1 do begin
 		f := FileByIndex(fi);
-		if (StringReplace(GetTextIn(Name(f), '[', ']'), ' ', '', [rfReplaceAll]) = str) then begin
+		if (GetTextIn(Name(f), '[', ']') = str) then begin
 			Result := f;
 			break;
 		end;
@@ -1268,15 +1269,15 @@ begin
 end;
 
 {
-	FileFormID
-	Gets the local File FormID of the record.
+	LocalFormID
+	Gets the local FormID of the record.
 	
 	Replaces the tricky FixedFormID function.
 	
 	Example usage:
-	c := FileFormID(e);
+	c := LocalFormID(e);
 }
-function FileFormID(e: IInterface): cardinal;
+function LocalFormID(e: IInterface): cardinal;
 begin
 	if (Copy(HexFormID(e), 1, 2) = 'FE')
 	then Result := (GetLoadOrderFormID(e) and $FFF)
@@ -1975,7 +1976,7 @@ var
 	masters, master: IInterface;
 	i: integer;
 	s: string;
-begin	
+begin
 	masters := ElementByPath(ElementByIndex(f, 0), 'Master Files');
 	if not Assigned(masters) then exit;
 	
@@ -2300,14 +2301,14 @@ end;
 	RecordSelect:
 	Gives the user a dialog from which they can select a record.
 	You can use this window four different ways:
-		- Inputting nil for both arguments.	This will allow the user
-			to select a file, a record group, and a record.
-		- Inputting a file.	This will allow the user to select a record
-			group and a record.
-		- Inputting a record group.	This will allow the user to select a
-			file and a record.
-		- Inputting a file and a record group.	This will allow the user
-			to only select a record.
+		- Inputting nil for both arguments.
+			This will allow the user to select a file, a record group, and a record.
+		- Inputting a file.
+			This will allow the user to select a record group and a record.
+		- Inputting a record group.
+			This will allow the user to select a file and a record.
+		- Inputting a file and a record group.
+			This will allow the user to only select a record.
 	
 	Example usage:
 	aRecord := RecordSelect('', '');
@@ -2478,7 +2479,7 @@ begin
 		if cb1.Items.IndexOf(sFile) > -1 then begin
 			cb1.Enabled := false;
 			cb1.ItemIndex := cb1.Items.IndexOf(sFile);
-			rsLoadGroups(cb1);
+			RSLoadGroups(cb1);
 		end;
 		if sGroup <> '' then begin
 			cb2.Enabled := false;
@@ -2594,8 +2595,8 @@ end;
 
 {
 	ConstructGroup:
-	A function which can be used to make a GroupBox.	Used to make
-	code more compact.
+	A function which can be used to make a GroupBox.
+	Used to make code more compact.
 	
 	Example usage:
 	group := ConstructGroup(frm, frm, 8, 8, 300, 300, 'My Group');
@@ -2639,8 +2640,8 @@ end;
 
 {
 	ConstructImage:
-	A function which can be used to make an image.	Used to make
-	code more compact.
+	A function which can be used to make an image.
+	Used to make code more compact.
 	
 	Example usage:
 	img := ConstructImage(frm, frm, 8, 8, 300, 300, gear, 'Options');
@@ -2682,8 +2683,8 @@ end;
 
 {
 	ConstructRadioGroup:
-	A function which can be used to make a radio group.	Used to make
-	code more compact.
+	A function which can be used to make a radio group.
+	Used to make code more compact.
 	
 	Example usage:
 	rg := ConstructRadioGroup(frm, frm, 8, 8, 200, 400, 'Options');
@@ -2723,8 +2724,8 @@ end;
 
 {
 	ConstructRadioButton:
-	A function which can be used to make a radio button.	Used to make
-	code more compact.
+	A function which can be used to make a radio button.
+	Used to make code more compact.
 	
 	Example usage:
 	rb := ConstructRadioButton(frm, frm, 8, 8, 200, 400, 'This way', false);
@@ -2763,8 +2764,8 @@ end;
 
 {
 	ConstructMemo:
-	A function which can be used to make a memo.	Used to make code
-	more compact.
+	A function which can be used to make a memo.
+	Used to make code more compact.
 	
 	Example usages:
 	memo := ConstructMemo(frm, frm, 0, 0, 200, 400, True, True, ssBoth, '');
@@ -2807,8 +2808,8 @@ end;
 
 {
 	ConstructScrollBox:
-	A function which can be used to make a scrollbox.	Used to make 
-	code more compact.
+	A function which can be used to make a scrollbox.
+	Used to make code more compact.
 	
 	Example usage:
 	sb := ConstructScrollBox(frm, frm, 400, alTop);
@@ -2841,8 +2842,8 @@ end;
 
 {
 	ConstructCheckbox:
-	A function which can be used to make a checkbox.	Used to make 
-	code more compact.
+	A function which can be used to make a checkbox.
+	Used to make code more compact.
 	
 	Example usage:
 	cb1 := ConstructCheckBox(frm, pnlBottom, 8, 8, 160, 
@@ -2888,8 +2889,8 @@ end;
 
 {
 	ConstructLabel:
-	A function which can be used to make a label.	Used to make 
-	code more compact.
+	A function which can be used to make a label.
+	Used to make code more compact.
 	
 	Example usage:
 	lbl3 := ConstructLabel(frm, pnlBottom, 65, 8, 0, 0, 
@@ -2937,8 +2938,8 @@ end;
 
 {
 	ConstructEdit:
-	A function which can be used to make an edit field.	Used to 
-	make code more compact.
+	A function which can be used to make an edit field.
+	Used to make code more compact.
 	
 	Example usage:
 	ed3 := ConstructEdit(frm, frm, 100, 8, 0, 0, 'Edit me!');
@@ -2981,8 +2982,8 @@ end;
 
 {
 	ConstructButton:
-	A function which can be used to make a button.	Used to make 
-	code more compact.
+	A function which can be used to make a button.
+	Used to make code more compact.
 	
 	Example usage:
 	btn1 := ConstructButton(frm, pnlBottom, 8, 8, 160, 'OK');
