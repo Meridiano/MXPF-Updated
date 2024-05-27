@@ -1,6 +1,6 @@
 {
 	Mator-The-Eternal's Functions
-	Edited 11/03/2024 by Meridiano
+	Edited 27/05/2024 by Meridiano
 	
 	A set of useful functions for use in xEdit scripts.
 	
@@ -51,7 +51,7 @@
 	- [LocalFormID]: gets the local FormID of a record as a cardinal.
 	- [IsLocalRecord]: returns false for override and injected records.
 	- [IsOverrideRecord]: returns true for override records.
-	- [SmallName]: gets the FormID and editor ID as a string.
+	- [SmallName]: gets record Signature, FormID and EditorID as a string.
 	- [ElementByIP]: loads an element by an indexed path.
 	- [ElementsByMIP]: provides an array of elements matching an indexed path (with [*] meaning any index).
 	- [GetIndexedPath]: gets the indexed path of an element.
@@ -1316,23 +1316,28 @@ end;
 
 {
 	SmallName
-	Gets the FormID and Editor ID of a record and outputs it as a string.
+	Gets the FormID and EditorID of a record and outputs it as a string.
 	
 	This is nicer than Name for many records, as it doesn't produce a 
-	string that's a mile long.
+	string that's a mile long. If record has no its own EditorID
+	(it's REFR or ACHR) its base EditorID will be used instead.
 	
 	Example usage:
-	s := SmallName(e);
-	AddMessage(s); // outputs [ABCD:01234567] EditorID, ABCD being signature
+	sn := SmallName(rec);
+	AddMessage('"' + sn + '"'); // outputs "[ABCD:01234567] EditorID", ABCD being signature
 }
 function SmallName(e: IInterface): string;
+var
+	sign, edid: string;
 begin
-	if Signature(e) = 'REFR' then
-		Result := '[' + Signature(e) + ':' + HexFormID(e) + '] ' + GetElementEditValues(e, 'NAME')
-	else
-		Result := '[' + Signature(e) + ':' + HexFormID(e) + '] ' + GetElementEditValues(e, 'EDID');
+	sign := Signature(e);
+	edid := GetElementEditValues(e, 'EDID');
+	if (edid = '') then if (sign = 'REFR') or (sign = 'ACHR')
+	then edid := GetElementEditValues(LinksTo(ElementByPath(e, 'NAME')), 'EDID');
+	if (edid = '') then edid := 'No Editor ID';
+	Result := '[' + sign + ':' + HexFormID(e) + '] ' + edid;
 end;
-	
+
 {
 	ElementByIP:
 	Element by Indexed Path
@@ -1567,12 +1572,12 @@ end;
 
 {
 	MGEEV:
-	Uses GetEditValues on each element in a list of elements to
+	Uses GetEditValue on each element in a list of elements to
 	produce a string-list of element edit values. Use with ElementsByMIP.
 	
 	Example usage:
 	lst := TList.Create;
-	// setup an arrray in lst with ElementsByMIP
+	// setup an array in lst with ElementsByMIP
 	sl := TStringList.Create;
 	MGEEV(sl, lst);
 }
@@ -1810,10 +1815,11 @@ end;
 {
 	HasItem:
 	Checks if an input record has an item matching the input EditorID.
+	Works for containers and constructible objects.
 	
 	Example usage:
 	if HasItem(e, 'IngotIron') then
-		AddMessage(Name(e) + ' is made using iron!');
+		AddMessage(Name(e) + ' requires iron to craft!');
 }
 function HasItem(rec: IInterface; s: string): boolean;
 var
@@ -1823,9 +1829,7 @@ var
 begin
 	Result := false;
 	items := ElementByPath(rec, 'Items');
-	if not Assigned(items) then 
-		exit;
-	
+	if not Assigned(items) then exit;
 	for i := 0 to ElementCount(items) - 1 do begin
 		li := ElementByIndex(items, i);
 		name := GEEV(LinksTo(ElementByPath(li, 'CNTO\Item')), 'EDID');
@@ -1853,9 +1857,7 @@ var
 begin
 	Result := false;
 	conditions := ElementByPath(rec, 'Conditions');
-	if not Assigned(conditions) then
-		exit;
-	
+	if not Assigned(conditions) then exit;
 	for i := 0 to ElementCount(conditions) - 1 do begin
 		ci := ElementByIndex(conditions, i);
 		func := GEEV(ci, 'CTDA\Function');
