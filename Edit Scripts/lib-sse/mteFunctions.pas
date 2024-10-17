@@ -983,8 +983,7 @@ begin
 		f := FileByLocalFileID(ps);
 		id := Copy(id, 3, 6);
 	end;
-	id := '$' + IntToHex(MasterCount(f), 2) + id;
-	Result := RecordByFormID(f, StrToInt(id), false);
+	Result := RecordByFormID(f, StrToInt('$FF' + id), false);
 end;
 
 {

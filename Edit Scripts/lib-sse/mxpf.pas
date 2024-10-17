@@ -1,6 +1,6 @@
 {
 	Mator's xEdit Patching Framework by Mator-The-Eternal
-	Edited by Meridiano 01/03/2024
+	Edited by Meridiano 17/10/2024
 }
 
 unit mxpf;
@@ -30,7 +30,7 @@ const
 	mxInclusionMode = 2;
 	
 	// CR-LF separated list of Bethesda files
-	mxBethesdaCoreFiles = 'Skyrim.esm'#13#10'SkyrimSE.exe'#13#10'Update.esm'#13#10'Dawnguard.esm'#13#10'HearthFires.esm'#13#10'Dragonborn.esm';
+	mxBethesdaCoreFiles = bethesdaFiles;
 	
 	// CR-LF separated list of hardcoded exe files
 	mxHardcodedExeFiles = 'SkyrimSE.exe';

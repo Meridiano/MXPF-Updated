@@ -1,6 +1,6 @@
 {
 	Mator-The-Eternal's Functions
-	Edited 27/05/2024 by Meridiano
+	Edited 17/10/2024 by Meridiano
 	
 	A set of useful functions for use in xEdit scripts.
 	
@@ -123,7 +123,7 @@
 unit mteFunctions;
 
 const
-	bethesdaFiles = 'Starfield.esm'#13#10'Starfield.exe'#13#10'BlueprintShips-Starfield.esm'#13#10'SFBGS006.esm'#13#10'SFBGS007.esm'#13#10'SFBGS008.esm';
+	bethesdaFiles = 'Starfield.esm'#13#10'Starfield.exe'#13#10'BlueprintShips-Starfield.esm'#13#10'SFBGS003.esm'#13#10'SFBGS004.esm'#13#10'SFBGS006.esm'#13#10'SFBGS007.esm'#13#10'SFBGS008.esm';
 	GamePath = DataPath + '..\';
 
 type
@@ -976,15 +976,17 @@ var
 	f: IInterface;
 begin
 	ps := Copy(id, 1, 2);
-	if (ps = 'FE') then begin
+	if (ps = 'FD') then begin
+		f := FileByLocalFileID(Copy(id, 1, 4));
+		id := '00' + Copy(id, 5, 4);
+	end else if (ps = 'FE') then begin
 		f := FileByLocalFileID(Copy(id, 1, 5));
 		id := '000' + Copy(id, 6, 3);
 	end else begin
 		f := FileByLocalFileID(ps);
 		id := Copy(id, 3, 6);
 	end;
-	id := '$' + IntToHex(MasterCount(f), 2) + id;
-	Result := RecordByFormID(f, StrToInt(id), false);
+	Result := RecordByFormID(f, StrToInt('$FF' + id), false);
 end;
 
 {
@@ -997,10 +999,12 @@ end;
 }
 function FileByLocalFileID(str: string): IInterface;
 var
+	ps: string;
 	fi: integer;
 	f: IInterface;
 begin
-	if Copy(str, 1, 2) = 'FE' then Insert(' ', str, 3);
+	ps := Copy(str, 1, 2);
+	if (ps = 'FD') or (ps = 'FE') then Insert(' ', str, 3);
 	for fi := 0 to FileCount - 1 do begin
 		f := FileByIndex(fi);
 		if (GetTextIn(Name(f), '[', ']') = str) then begin
