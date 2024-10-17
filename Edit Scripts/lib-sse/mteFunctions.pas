@@ -1,6 +1,6 @@
 {
 	Mator-The-Eternal's Functions
-	Edited 27/05/2024 by Meridiano
+	Edited 17/10/2024 by Meridiano
 	
 	A set of useful functions for use in xEdit scripts.
 	
