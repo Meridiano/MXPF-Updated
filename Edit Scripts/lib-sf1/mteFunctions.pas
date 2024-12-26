@@ -1,6 +1,6 @@
 {
 	Mator-The-Eternal's Functions
-	Edited 17/10/2024 by Meridiano
+	Edited 26/12/2024 by Meridiano
 	
 	A set of useful functions for use in xEdit scripts.
 	
@@ -87,8 +87,9 @@
 	- [GetMasters]: adds masters from the specified file to the specified string-list.
 	- [AddMastersToList]: adds masters from the specified file (and the file itself) to the specified string-list.
 	- [AddMastersToFile]: adds masters to the specified file from the specified string-list. Will re-add masters if they were already added by AddMasterIfMissing and later removed.
+	- [AddRequiredMasters]: adds masters required for the specified record to the specified file with optional master-files list sorting on the latter.
 	- [RemoveMaster]: removes a master of the specified name from the specified file. NOTE: This function can be dangerous if used improperly.
-	- [FileSelect]: creates a window from which the user can select or create a file. Doesn't include bethesda master files. Outputs selected file as IInterface.
+	- [FileSelect]: creates a window from which the user can select or create a file. Doesn't include Bethesda masters. Outputs selected file as IInterface.
 	- [MultiFileSelect]: allows the user to select multiple files, returning them through a TStringList.
 	- [RecordSelect]: creates a window from which the user can choose a record.
 	- [EditOutOfDate]: alerts the user that their xEdit is out of date, and provides them with a button they can click to go to the AFKMods page to download an updated version.
@@ -1809,11 +1810,10 @@ var
 begin
 	Result := false;
 	kwda := ElementByPath(e, 'Keywords\KWDA');
-	for n := 0 to ElementCount(kwda) - 1 do
-		if GetElementEditValues(LinksTo(ElementByIndex(kwda, n)), 'EDID') = edid then begin
-			Result := true;
-			break;
-		end;
+	for n := 0 to Pred(ElementCount(kwda)) do if GetElementEditValues(LinksTo(ElementByIndex(kwda, n)), 'EDID') = edid then begin
+		Result := true;
+		break;
+	end;
 end;
 
 {
@@ -1833,7 +1833,7 @@ var
 	i: integer;
 const
 	elemA = 'COBJ=FVPA,CONT=Container+Items\Items,RSPJ=FVPA';
-	pathA = 'COBJ=Component,CONT=CNTO\Item,RSPJ=Resource';
+	pathA = 'COBJ=Component,CONT=CNTO\Item,RSPJ=Item';
 begin
 	Result := false;
 	sign := Signature(rec);
@@ -2088,6 +2088,29 @@ begin
 	
 	// free string-list
 	slCurrentMasters.Free;
+end;
+
+{
+	AddRequiredMasters:
+	Adds masters required for the specified record to the specified file
+	with optional master-files list sorting on the latter.
+	
+	Example usage:
+	target := FileByIndex(i);
+	rec := RecordByIndex(f, 123);
+	AddRequiredMasters(rec, target, true);
+	// now you can copy safely
+	wbCopyElementToFile(rec, target, true, true);
+}
+procedure AddRequiredMasters(e: IInterface; f: IwbFile; sort: Boolean);
+var
+	sl: TStringList;
+begin
+	sl := TStringList.Create;
+	AddMastersToList(GetFile(e), sl);
+	AddMastersToFile(f, sl, true);
+	if sort then SortMasters(f);
+	sl.Free;
 end;
 
 {
