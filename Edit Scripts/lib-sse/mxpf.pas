@@ -1,6 +1,6 @@
 {
 	Mator's xEdit Patching Framework by Mator-The-Eternal
-	Edited by Meridiano 17/10/2024
+	Edited by Meridiano 07/02/2025
 }
 
 unit mxpf;
@@ -145,9 +145,11 @@ end;
 
 procedure FinalizeMXPF;
 begin
-	// clean masters on mxPatchFile if it exists
-	if Assigned(mxPatchFile) then
+	// clean and sort masters if mxPatchFile exists
+	if Assigned(mxPatchFile) then begin
 		CleanMasters(mxPatchFile);
+		SortMasters(mxPatchFile);
+	end;
 	
 	// log finalization
 	if mxDebug then begin
