@@ -1,6 +1,6 @@
 {
 	Mator-The-Eternal's Functions
-	Edited 26/12/2024 by Meridiano
+	Edited 20/07/2025 by Meridiano
 	
 	A set of useful functions for use in xEdit scripts.
 	
@@ -119,6 +119,7 @@
 	- [CButton]: ConstructButton shortened function name.
 	- [CPair]: ConstructLabelEditPair shortened function name.
 	- [CModal]: ConstructModalButtons shortened function name.
+	- [StringToList]: Splits string into list using a strict delimiter.
 }
 
 unit mteFunctions;
@@ -268,54 +269,54 @@ function ConflictThisString(e: IInterface): string;
 begin
 	Result := '';
 	if ElementType(e) = etMainRecord then begin
-		if ConflictThisForMainRecord(e) = ctUnknown then 
+		if ConflictThisForMainRecord(e) = ctUnknown then
 			Result := 'ctUnknown'
-		else if ConflictThisForMainRecord(e) = ctIgnored then 
+		else if ConflictThisForMainRecord(e) = ctIgnored then
 			Result := 'ctIgnored'
-		else if ConflictThisForMainRecord(e) = ctNotDefined then 
+		else if ConflictThisForMainRecord(e) = ctNotDefined then
 			Result := 'ctNotDefined'
-		else if ConflictThisForMainRecord(e) = ctIdenticalToMaster then 
+		else if ConflictThisForMainRecord(e) = ctIdenticalToMaster then
 			Result := 'ctIdenticalToMaster'
-		else if ConflictThisForMainRecord(e) = ctOnlyOne then 
+		else if ConflictThisForMainRecord(e) = ctOnlyOne then
 			Result := 'ctOnlyOne'
-		else if ConflictThisForMainRecord(e) = ctHiddenByModGroup then 
+		else if ConflictThisForMainRecord(e) = ctHiddenByModGroup then
 			Result := 'ctHiddenByModGroup'
-		else if ConflictThisForMainRecord(e) = ctMaster then 
+		else if ConflictThisForMainRecord(e) = ctMaster then
 			Result := 'ctMaster'
-		else if ConflictThisForMainRecord(e) = ctConflictBenign then 
+		else if ConflictThisForMainRecord(e) = ctConflictBenign then
 			Result := 'ctConflictBenign'
-		else if ConflictThisForMainRecord(e) = ctOverride then 
+		else if ConflictThisForMainRecord(e) = ctOverride then
 			Result := 'ctOverride'
-		else if ConflictThisForMainRecord(e) = ctIdenticalToMasterWinsConflict then 
+		else if ConflictThisForMainRecord(e) = ctIdenticalToMasterWinsConflict then
 			Result := 'ctIdenticalToMasterWinsConflict'
-		else if ConflictThisForMainRecord(e) = ctConflictWins then 
+		else if ConflictThisForMainRecord(e) = ctConflictWins then
 			Result := 'ctConflictWins'
-		else if ConflictThisForMainRecord(e) = ctConflictLoses then 
+		else if ConflictThisForMainRecord(e) = ctConflictLoses then
 			Result := 'ctConflictLoses';
 	end else begin
-		if ConflictThisForNode(e) = ctUnknown then 
+		if ConflictThisForNode(e) = ctUnknown then
 			Result := 'ctUnknown'
-		else if ConflictThisForNode(e) = ctIgnored then 
+		else if ConflictThisForNode(e) = ctIgnored then
 			Result := 'ctIgnored'
-		else if ConflictThisForNode(e) = ctNotDefined then 
+		else if ConflictThisForNode(e) = ctNotDefined then
 			Result := 'ctNotDefined'
-		else if ConflictThisForNode(e) = ctIdenticalToMaster then 
+		else if ConflictThisForNode(e) = ctIdenticalToMaster then
 			Result := 'ctIdenticalToMaster'
-		else if ConflictThisForNode(e) = ctOnlyOne then 
+		else if ConflictThisForNode(e) = ctOnlyOne then
 			Result := 'ctOnlyOne'
-		else if ConflictThisForNode(e) = ctHiddenByModGroup then 
+		else if ConflictThisForNode(e) = ctHiddenByModGroup then
 			Result := 'ctHiddenByModGroup'
-		else if ConflictThisForNode(e) = ctMaster then 
+		else if ConflictThisForNode(e) = ctMaster then
 			Result := 'ctMaster'
-		else if ConflictThisForNode(e) = ctConflictBenign then 
+		else if ConflictThisForNode(e) = ctConflictBenign then
 			Result := 'ctConflictBenign'
-		else if ConflictThisForNode(e) = ctOverride then 
+		else if ConflictThisForNode(e) = ctOverride then
 			Result := 'ctOverride'
-		else if ConflictThisForNode(e) = ctIdenticalToMasterWinsConflict then 
+		else if ConflictThisForNode(e) = ctIdenticalToMasterWinsConflict then
 			Result := 'ctIdenticalToMasterWinsConflict'
-		else if ConflictThisForNode(e) = ctConflictWins then 
+		else if ConflictThisForNode(e) = ctConflictWins then
 			Result := 'ctConflictWins'
-		else if ConflictThisForNode(e) = ctConflictLoses then 
+		else if ConflictThisForNode(e) = ctConflictLoses then
 			Result := 'ctConflictLoses';
 	end;
 end;
@@ -332,34 +333,34 @@ function ConflictAllString(e: IInterface): string;
 begin
 	Result := '';
 	if ElementType(e) = etMainRecord then begin
-		if ConflictAllForMainRecord(e) = caUnknown then 
+		if ConflictAllForMainRecord(e) = caUnknown then
 			Result := 'caUnknown'
-		else if ConflictAllForMainRecord(e) = caOnlyOne then 
+		else if ConflictAllForMainRecord(e) = caOnlyOne then
 			Result := 'caOnlyOne'
-		else if ConflictAllForMainRecord(e) = caConflict then 
+		else if ConflictAllForMainRecord(e) = caConflict then
 			Result := 'caConflict'
-		else if ConflictAllForMainRecord(e) = caNoConflict then 
+		else if ConflictAllForMainRecord(e) = caNoConflict then
 			Result := 'caNoConflict'
-		else if ConflictAllForMainRecord(e) = caConflictBenign then 
+		else if ConflictAllForMainRecord(e) = caConflictBenign then
 			Result := 'caConflictBenign'
-		else if ConflictAllForMainRecord(e) = caOverride then 
+		else if ConflictAllForMainRecord(e) = caOverride then
 			Result := 'caOverride'
-		else if ConflictAllForMainRecord(e) = caConflictCritical then 
+		else if ConflictAllForMainRecord(e) = caConflictCritical then
 			Result := 'caConflictCritical';
 	end else begin
-		if ConflictAllForNode(e) = caUnknown then 
+		if ConflictAllForNode(e) = caUnknown then
 			Result := 'caUnknown'
-		else if ConflictAllForNode(e) = caOnlyOne then 
+		else if ConflictAllForNode(e) = caOnlyOne then
 			Result := 'caOnlyOne'
-		else if ConflictAllForNode(e) = caConflict then 
+		else if ConflictAllForNode(e) = caConflict then
 			Result := 'caConflict'
-		else if ConflictAllForNode(e) = caNoConflict then 
+		else if ConflictAllForNode(e) = caNoConflict then
 			Result := 'caNoConflict'
-		else if ConflictAllForNode(e) = caConflictBenign then 
+		else if ConflictAllForNode(e) = caConflictBenign then
 			Result := 'caConflictBenign'
-		else if ConflictAllForNode(e) = caOverride then 
+		else if ConflictAllForNode(e) = caOverride then
 			Result := 'caOverride'
-		else if ConflictAllForNode(e) = caConflictCritical then 
+		else if ConflictAllForNode(e) = caConflictCritical then
 			Result := 'caConflictCritical';
 	end;
 end;
@@ -417,13 +418,9 @@ begin
 	Result := false;
 	
 	// use TStringList to determine if input matches expression
-	slExpr := TStringList.Create;
-	slExpr.Delimiter := '*';
-	slExpr.StrictDelimiter := true;
-	slExpr.DelimitedText := expression;
+	slExpr := StringToList(expression, '*');
 	for i := Pred(slExpr.Count) downto 0 do begin
-		if slExpr[i] = '' then
-			slExpr.Delete(i);
+		if slExpr[i] = '' then slExpr.Delete(i);
 	end;
 	
 	if Pos('*', expression) > 0 then begin
@@ -432,13 +429,12 @@ begin
 			if Pos(slExpr[i], input) > pPos then begin
 				pPos := Pos(slExpr[i], input);
 				input := Copy(input, Pos(slExpr[i], input) + Length(slExpr[i]) + 1, Length(input));
-			end else
-				break;
-			if i = Pred(slExpr.Count) then
-				Result := true;
+			end else break;
+			if i = Pred(slExpr.Count) then Result := true;
 		end;
-	end else
-		Result := (input = expression);
+	end else Result := (input = expression);
+	
+	slExpr.Free;
 end;
 
 {
@@ -502,7 +498,7 @@ end;
 
 {
 	BatchCopyDirectory:
-	Adds copy commands to a batch string-list to copy all of the 
+	Adds copy commands to a batch string-list to copy all of the
 	contents of a directory.
 	
 	Example usage:
@@ -511,7 +507,7 @@ end;
 	slIgnore.Add('mteFunctions.pas');
 	BatchCopyDirectory(ScriptsPath, 'C:\ScriptsBackup', batch, slIgnore, false);
 }
-procedure BatchCopyDirectory(src, dst: string; ignore: TStringList; 
+procedure BatchCopyDirectory(src, dst: string; ignore: TStringList;
 	var batch: TStringList; verbose: boolean);
 var
 	i: integer;
@@ -682,7 +678,7 @@ end;
 	Converts a TDateTime to a filename-safe string.
 	
 	Example usage:
-	AddMessage(FileDateTimeStr(Now)); // 
+	AddMessage(FileDateTimeStr(Now)); //
 }
 function FileDateTimeStr(t: TDateTime): string;
 begin
@@ -779,7 +775,7 @@ begin
 		Result := s1 + s2;
 end;
 
-{ 
+{
 	ItPos:
 	An iteration position function.
 	
@@ -918,10 +914,7 @@ end;
 	
 	Example usage:
 	s := 'Items\[0]\CNTO\Item';
-	path := TStringList.Create;
-	path.Delimiter := '\';
-	path.StrictDelimiter := true;
-	path.DelimitedText := s;
+	path := StringToList(s, '\');
 	AddMessage(DelimitedTextBetween(path, 1, 2));
 	// prints '[0]\CNTO'
 }
@@ -1067,7 +1060,7 @@ end;
 	Gets a file by an author.
 	
 	Example usage:
-	f := FileByAuthor('rsalvatore'); 
+	f := FileByAuthor('rsalvatore');
 }
 function FileByAuthor(s: string): IInterface;
 var
@@ -1146,7 +1139,7 @@ end;
 	
 	Example usage:
 	ovr := OverrideByFile(record, aFile);
-	if Assigned(ovr) then 
+	if Assigned(ovr) then
 		AddMessage('Found override for '+Name(record)+' in file '+GetFileName(aFile));
 }
 function OverrideByFile(e, f: IInterface): IInterface;
@@ -1189,7 +1182,7 @@ begin
 	else if ElementTypeString(f) = 'etGroupRecord' then begin
 		for i := 0 to Pred(ElementCount(f)) do begin
 			e := EBI(f, i);
-			if ElementTypeString(e) = 'etGroupRecord' then 
+			if ElementTypeString(e) = 'etGroupRecord' then
 				Result := Result + OverrideRecordCount(e)
 			else if not Equals(MasterOrSelf(e), e) then
 				Inc(Result);
@@ -1246,7 +1239,7 @@ var
 	ct: integer;
 begin
 	s := Name(g);
-	ct := Length(s) - Length(Copy(s, 1, Pos('"', s))) - 1; 
+	ct := Length(s) - Length(Copy(s, 1, Pos('"', s))) - 1;
 	Result := Copy(s, Pos('"', s) + 1, ct);
 end;
 
@@ -1261,11 +1254,12 @@ end;
 }
 function HexFormID(e: IInterface): string;
 var
-	s: string;
+	id: cardinal;
 begin
-	s := GetElementEditValues(e, 'Record Header\FormID');
-	if SameText(Signature(e), '') then Result := '00000000'
-	else Result := Copy(s, Pos('[' + Signature(e) + ':', s) + Length(Signature(e)) + 2, 8);
+	if Assigned(e)
+	then id := GetLoadOrderFormID(e)
+	else id := 0;
+	Result := IntToHex(id, 8);
 end;
 
 {
@@ -1278,10 +1272,13 @@ end;
 	c := LocalFormID(e);
 }
 function LocalFormID(e: IInterface): cardinal;
+var
+	id: cardinal;
 begin
+	id := GetLoadOrderFormID(e);
 	if (Copy(HexFormID(e), 1, 2) = 'FE')
-	then Result := (GetLoadOrderFormID(e) and $FFF)
-	else Result := (GetLoadOrderFormID(e) and $FFFFFF);
+	then Result := (id and $FFF)
+	else Result := (id and $FFFFFF);
 end;
 
 {
@@ -1318,9 +1315,9 @@ end;
 	SmallName
 	Gets the FormID and EditorID of a record and outputs it as a string.
 	
-	This is nicer than Name for many records, as it doesn't produce a 
+	This is nicer than Name for many records, as it doesn't produce a
 	string that's a mile long. If record has no its own EditorID
-	(it's REFR or ACHR) its base EditorID will be used instead.
+	(it's REFR or ACHR) its base EditorID is used instead.
 	
 	Example usage:
 	sn := SmallName(rec);
@@ -1332,8 +1329,9 @@ var
 begin
 	sign := Signature(e);
 	edid := GetElementEditValues(e, 'EDID');
-	if (edid = '') then if (sign = 'REFR') or (sign = 'ACHR')
-	then edid := GetElementEditValues(LinksTo(ElementByPath(e, 'NAME')), 'EDID');
+	if (edid = '') then
+		if (sign = 'REFR') or (sign = 'ACHR') then
+			edid := GetElementEditValues(LinksTo(ElementByPath(e, 'NAME')), 'EDID');
 	if (edid = '') then edid := 'No Editor ID';
 	Result := '[' + sign + ':' + HexFormID(e) + '] ' + edid;
 end;
@@ -1342,7 +1340,7 @@ end;
 	ElementByIP:
 	Element by Indexed Path
 	
-	This is a function to help with getting at elements that are inside 
+	This is a function to help with getting at elements that are inside
 	lists. It allows you to use an "indexed path" to get at these elements
 	that would otherwise be inaccessible without multiple lines of code.
 	
@@ -1359,10 +1357,7 @@ begin
 	ip := StringReplace(ip, '/', '\', [rfReplaceAll]);
 	
 	// prepare path string-list delimited by backslashes
-	path := TStringList.Create;
-	path.Delimiter := '\';
-	path.StrictDelimiter := true;
-	path.DelimitedText := ip;
+	path := StringToList(ip, '\');
 	
 	// traverse path
 	for i := 0 to Pred(path.count) do begin
@@ -1375,6 +1370,7 @@ begin
 	
 	// set result
 	Result := e;
+	path.Free;
 end;
 
 {
@@ -1388,7 +1384,7 @@ end;
 	ElementsByMIP(lst, e, 'Items\[*]\CNTO\Item');
 	for i := 0 to Pred(lst.Count) do begin
 		AddMessage(GetEditValue(ObjectToElement(lst[i])));
-	end; 
+	end;
 	lst.Free;
 }
 procedure ElementsByMIP(var lst: TList; e: IInterface; ip: string);
@@ -1402,10 +1398,7 @@ begin
 	ip := StringReplace(ip, '/', '\', [rfReplaceAll]);
 	
 	// prepare path string-list delimited by backslashes
-	path := TStringList.Create;
-	path.Delimiter := '\';
-	path.StrictDelimiter := true;
-	path.DelimitedText := ip;
+	path := StringToList(ip, '\');
 	
 	// traverse path
 	bMult := false;
@@ -1423,6 +1416,7 @@ begin
 			e := ElementByPath(e, path[i]);
 	end;
 	if not bMult then lst.Add(TObject(e));
+	path.Free;
 end;
 
 {
@@ -1495,7 +1489,7 @@ begin
 	// create elements and populate the list
 	for i := 0 to values.Count - 1 do begin
 		newelement := ElementAssign(list, HighInteger, nil, False);
-		try 
+		try
 			SetEditValue(newelement, values[i]);
 		except on Exception do
 			Remove(newelement); // remove the invalid/failed element
@@ -1910,7 +1904,7 @@ end;
 	
 	Example usage:
 	ExtractPathBSA(DataPath + 'OldMars - Textures.ba2', 'C:\TestExtract\', 'textures\dlc_oldmars\clothes');
-} 
+}
 procedure ExtractPathBSA(aContainerName, aPath, aSubPath: string);
 var
 	i: integer;
@@ -1991,7 +1985,7 @@ end;
 
 {
 	AddMastersToList:
-	Adds the masters from a specific file, and the file itself, to a 
+	Adds the masters from a specific file, and the file itself, to a
 	specified string-list.
 	
 	Example usage:
@@ -2419,15 +2413,15 @@ begin
 	else begin
 		if (sGroup <> '') then
 			prompt := 'Choose a file, then choose a record:'
-		else 
+		else
 			prompt := 'Choose a file, a group, and a record:';
 	end;
 	
 	// prepare sFileList
 	for i := 0 to FileCount - 1 do begin
-		if not (sFileList = '') then 
+		if not (sFileList = '') then
 			sFileList := sFileList + #13#10 + GetFileName(FileByLoadOrder(i))
-		else 
+		else
 			sFileList := GetFileName(FileByLoadOrder(i));
 	end;
 	
@@ -2513,7 +2507,7 @@ begin
 		end;
 		
 		if frm.ShowModal = mrOk then
-			if cb3.ItemIndex > -1 then 
+			if cb3.ItemIndex > -1 then
 				Result := ObjectToElement(cb3.Items.Objects[cb3.Items.IndexOf(cb3.Text)]);
 	finally
 		frm.Free;
@@ -2522,7 +2516,7 @@ end;
 
 {
 	EditOutOfDate:
-	Informs the user that their xEdit is out of date, and provides an 
+	Informs the user that their xEdit is out of date, and provides an
 	option to open the AFKMods thread to download the current beta.
 	
 	Example usage:
@@ -2584,7 +2578,7 @@ begin
 		if frm.ShowModal = mrOk then begin
 			ShellExecute(TForm(frm).Handle, 'open', url, '', '', SW_SHOWNORMAL);
 		end;
-	finally 
+	finally
 		frm.Free;
 	end;
 end;
@@ -2605,8 +2599,7 @@ end;
 
 {
 	CheckedToBool:
-	A function which returns a boolean corresponding to a 
-	TCheckBoxState.
+	A function which returns a boolean corresponding to a TCheckBoxState.
 	
 	Example usage:
 	if CheckedToBool(cb.State) then
@@ -2683,7 +2676,7 @@ begin
 	img.Width := width;
 	img.Height := height;
 	img.Picture := picture;
-	if (t <> '') then begin 
+	if (t <> '') then begin
 		img.ShowHint := true;
 		img.Hint := t;
 	end;
@@ -2870,11 +2863,11 @@ end;
 	Used to make code more compact.
 	
 	Example usage:
-	cb1 := ConstructCheckBox(frm, pnlBottom, 8, 8, 160, 
+	cb1 := ConstructCheckBox(frm, pnlBottom, 8, 8, 160,
 		'Remove persistent references', cbChecked);
 }
 function ConstructCheckBox(h, p: TObject;
-	top, left, width: Integer; 
+	top, left, width: Integer;
 	s: string; state: TCheckBoxState;
 	t: string): TCheckBox;
 var
@@ -2900,7 +2893,7 @@ end;
 	Shortened function name for ConstructCheckBox.
 	
 	Example usage:
-	cb1 := CCheckBox(frm, pnlBottom, 8, 8, 160, 
+	cb1 := CCheckBox(frm, pnlBottom, 8, 8, 160,
 		'Remove persistent references', cbChecked);
 }
 function CCheckBox(h, p: TObject;
@@ -2917,7 +2910,7 @@ end;
 	Used to make code more compact.
 	
 	Example usage:
-	lbl3 := ConstructLabel(frm, pnlBottom, 65, 8, 0, 0, 
+	lbl3 := ConstructLabel(frm, pnlBottom, 65, 8, 0, 0,
 		'Reference removal options:');
 }
 function ConstructLabel(h, p: TObject;
@@ -2950,7 +2943,7 @@ end;
 	Shortened function name for ConstructLabel.
 	
 	Example usage:
-	lbl3 := CLabel(frm, pnlBottom, 65, 8, 0, 0, 
+	lbl3 := CLabel(frm, pnlBottom, 65, 8, 0, 0,
 		'Reference removal options:');
 }
 function CLabel(h, p: TObject;
@@ -3036,7 +3029,7 @@ end;
 	Example usage:
 	CButton(frm, pnlBottom, 8, 8, 160, 'OK');
 }
-function CButton(h, p: TObject; 
+function CButton(h, p: TObject;
 	top, left, height, width: Integer;
 	s: String): TButton;
 begin
@@ -3079,8 +3072,8 @@ end;
 
 {
 	ConstructModalButtons:
-	A procedure which makes the standard OK and Cancel buttons 
-	on a form.
+	A procedure which makes the standard OK and Cancel
+	buttons on a form.
 	
 	Example usage:
 	ConstructModalButtons(frm, pnlBottom, frm.Height - 80);
@@ -3113,6 +3106,28 @@ end;
 procedure CModal(h, p: TObject; top: Integer);
 begin
 	ConstructModalButtons(h, p, top);
+end;
+
+{
+	StringToList:
+	Splits string into list using a strict delimiter.
+	If specified @del is not a single char, then
+	output list has only one entry equal to @str.
+	
+	Example usage:
+	myList := StringToList('Brown=Fox;Lazy=Dog', ';');
+	AddMessage(myList[0]); // Brown=Fox
+	AddMessage(myList.Values['Lazy']); // Dog
+}
+
+function StringToList(str, del: string): TStringList;
+begin
+	Result := TStringList.Create;
+	if Length(del) = 1 then begin
+		Result.Delimiter := del;
+		Result.StrictDelimiter := true;
+		Result.DelimitedText := str;
+	end else Result.Add(str);
 end;
 
 end.

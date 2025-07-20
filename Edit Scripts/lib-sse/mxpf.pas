@@ -1,6 +1,6 @@
 {
 	Mator's xEdit Patching Framework by Mator-The-Eternal
-	Edited by Meridiano 07/02/2025
+	Edited by Meridiano 20/07/2025
 }
 
 unit mxpf;
@@ -190,7 +190,7 @@ end;
 
 
 //=========================================================================
-// PATCH FILE SELECTION 
+// PATCH FILE SELECTION
 //=========================================================================
 procedure PatchFileByAuthor(author: string);
 var
@@ -211,7 +211,7 @@ begin
 	
 	// print debug messages
 	if mxDebug then begin
-		if madeNewFile then 
+		if madeNewFile then
 			DebugMessage(Format('MXPF: Made new file %s, with author %s', [GetFileName(mxPatchFile), GetAuthor(mxPatchFile)]))
 		else
 			DebugMessage(Format('MXPF: Using patch file %s', [GetFileName(mxPatchFile)]));
@@ -242,7 +242,7 @@ begin
 		
 	// print debug messages
 	if mxDebug then begin
-		if madeNewFile then 
+		if madeNewFile then
 			DebugMessage(Format('MXPF: Made new file %s', [GetFileName(mxPatchFile)]))
 		else
 			DebugMessage(Format('MXPF: Using patch file %s', [GetFileName(mxPatchFile)]));
@@ -274,7 +274,7 @@ end;
 procedure SetInclusions(s: string);
 begin
 	// if user hasn't initialized MXPF, raise exception
-	if not mxInitialized then 
+	if not mxInitialized then
 		raise Exception.Create('MXPF Error: You need to call InitializeMXPF before calling SetInclusions');
 	
 	// set files to string
@@ -378,8 +378,7 @@ begin
 			if mxLoadWinningOverrides then begin
 				try
 					rec := WinningOverrideBefore(rec, mxPatchFile);
-					if mxDebug and mxDebugVerbose then DebugMessage(Format('Using override from %s', 
-						[GetFileName(GetFile(rec))]));
+					if mxDebug and mxDebugVerbose then DebugMessage(Format('Using override from %s', [GetFileName(GetFile(rec))]));
 				except
 					on x: Exception do begin
 						DebugMessage('Exception getting winning override for ' + Name(rec) + ', ' + x.Message);
@@ -397,9 +396,9 @@ begin
 		// print number of records we added to the list
 		if mxDebug and not mxDebugVerbose then begin
 			DebugMessage(Format('Found %d records', [mxRecordsFound]));
-			if mxLoadMasterRecords then 
-				DebugMessage(Format('Skipped %d override records', [mxOverrideRecords]));	 
-			if mxLoadOverrideRecords then 
+			if mxLoadMasterRecords then
+				DebugMessage(Format('Skipped %d override records', [mxOverrideRecords]));
+			if mxLoadOverrideRecords then
 				DebugMessage(Format('Skipped %d master records', [mxMasterRecords]));
 		end;
 	end;
@@ -407,7 +406,7 @@ begin
 	// print final debug messages
 	if mxDebug then begin
 		if mxRecords.Count > 0 then
-			DebugMessage(Format('MXPF: Loaded %d records in %0.3f sec', [mxRecords.Count, Now - start]))
+			DebugMessage(Format('MXPF: Loaded %s records in %0.3f sec', [IntToStr(mxRecords.Count), Now - start]))
 		else
 			DebugMessage('MXPF: Could not find any records matching signature ' + sig);
 		DebugMessage(' ');
@@ -520,9 +519,9 @@ begin
 		// print number of records we added to the list
 		if mxDebug and not mxDebugVerbose then begin
 			DebugMessage(Format('Found %d records', [mxRecordsFound]));
-			if mxLoadMasterRecords then 
+			if mxLoadMasterRecords then
 				DebugMessage(Format('Removed %d override records', [mxOverrideRecords]));
-			if mxLoadWinningOverrides then 
+			if mxLoadWinningOverrides then
 				DebugMessage(Format('Removed %d master records', [mxMasterRecords]));
 		end;
 	end;
@@ -530,7 +529,7 @@ begin
 	// print final debug messages
 	if mxDebug then begin
 		if mxRecords.Count > 0 then
-			DebugMessage(Format('MXPF: Loaded %d records in %0.3f sec', [mxRecords.Count, Now - start]))
+			DebugMessage(Format('MXPF: Loaded %s records in %0.3f sec', [IntToStr(mxRecords.Count), Now - start]))
 		else
 			DebugMessage('MXPF: Could not find any records matching signature ' + sig);
 		DebugMessage(' ');
@@ -722,7 +721,7 @@ begin
 	// print final debug messages
 	if mxDebug then begin
 		 if mxPatchRecords.Count > 0 then
-			DebugMessage(Format('MXPF: Copied %d records in %0.3f sec', [mxPatchRecords.Count, Now - start]))
+			DebugMessage(Format('MXPF: Copied %s records in %0.3f sec', [IntToStr(mxPatchRecords.Count), Now - start]))
 		else
 			DebugMessage('MXPF: No records copied');
 		DebugMessage(' ');
